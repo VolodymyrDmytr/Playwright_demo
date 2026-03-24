@@ -17,13 +17,11 @@ class Constants:
         """
         return self.login_url + f'inventory-item.html?id={product_id}'
 
-    # Identificators for login page
-
-    # Identificators for catalog page
-
-    # Identificators for cart page
-
-    # Identificators for burger menu
+    # Sort on catalog page
+    sort_type_a_z = 'az'
+    sort_type_z_a = 'za'
+    sort_type_low_price = 'lohi'
+    sort_type_high_price = 'hilo'
 
 
 const = Constants()
