@@ -7,7 +7,10 @@ class BasePage:
     def __intit__(self):
         self.page = Page()
 
-    def go_to_page(self, url: str) -> None:
+    def go_to_page(
+            self,
+            url: str,
+    ) -> None:
         """Open page
 
         Args:
@@ -15,7 +18,7 @@ class BasePage:
         """
         self.page.goto(url)
 
-    def check_title(self) -> bool:
+    def check_page_title(self) -> bool:
         """Check and return is page has required title
         Required title (in config/constants.py): page_title
 
@@ -24,7 +27,10 @@ class BasePage:
         """
         expect(self.page).to_have_title(const.page_title)
 
-    def check_url(self, url: str) -> bool:
+    def check_url(
+            self,
+            url: str,
+    ) -> bool:
         """Checks is actual url is matching given url
 
         Args:

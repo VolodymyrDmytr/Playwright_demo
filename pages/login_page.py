@@ -11,18 +11,38 @@ class LoginPage(BasePage):
     # Indentificators
     @property
     def username_field(self):
+        """Username field on login page
+
+        Returns:
+            it`s locator
+        """
         return self.page.get_by_placeholder('Username')
 
     @property
     def password_field(self):
+        """Password field on login page
+
+        Returns:
+            it`s locator
+        """
         return self.page.get_by_placeholder('Password')
 
     @property
     def login_button(self):
+        """Login button on login page
+
+        Returns:
+            it`s locator
+        """
         return self.page.locator('input.submit-button')
 
     @property
     def error_message(self):
+        """Block for errors on login page
+
+        Returns:
+            it`s locator
+        """
         return self.page.locator('div.error-message-container')
 
     # Actions

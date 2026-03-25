@@ -12,31 +12,52 @@ class CatalogPage(BasePage):
 
     @property
     def add_to_cart_buttons(self):
+        """"Add to cart" buttons on Catalog page
+
+        Returns:
+            it`s locator
+        """
         return self.page.locator(
             'button',
             has_text='add-to-cart-sauce-labs-bolt-t-shirt')
 
     @property
     def remove_buttons(self):
+        """"Remove" buttons on Catalog page
+
+        Returns:
+            it`s locator
+        """
         return self.page.locator(
             'button',
             has_text='remove-sauce-labs-backpack')
 
     @property
     def product_cards(self):
+        """Cards on Catalog page
+
+        Returns:
+            it`s locator
+        """
         return self.page.locator('.inventory_item')
 
     @property
     def product_image_in_card(self):
+        """Product images on Catalog page
+
+        Returns:
+            it`s locator
+        """
         return self.page.locator('img.inventory_item_img')
 
     @property
     def sort_select(self):
-        return self.page.locator('.product_sort_container')
+        """Sort select on Catalog page
 
-    @property
-    def cart_icon(self):
-        return self.page.locator('.shopping_cart_link')
+        Returns:
+            it`s locator
+        """
+        return self.page.locator('.product_sort_container')
 
     # Actions
 
@@ -119,9 +140,3 @@ class CatalogPage(BasePage):
         """
         locator = self.sort_select
         locator.select_option(value=data)
-
-    def click_cart_icon(self) -> None:
-        """Clicks on the cart icon
-        """
-        locator = self.cart_icon
-        locator.click()

@@ -3,7 +3,7 @@ from playwright.sync_api import Page
 from pages.base_page import BasePage
 
 
-class NavigationMenu(BasePage):
+class Header(BasePage):
 
     def __init__(self):
         self.page = Page()
@@ -12,27 +12,66 @@ class NavigationMenu(BasePage):
 
     @property
     def burger_menu_button(self):
+        """Burger menu button in Header
+
+        Returns:
+            it`s locator
+        """
         return self.page.get_by_alt_text('Open Menu')
 
     @property
     def close_navigation(self):
+        """Close button button in Navigation
+
+        Returns:
+            it`s locator
+        """
         return self.page.get_by_alt_text('Close Menu')
 
     @property
     def all_items_option_nav(self):
+        """"All items" option in Navigation
+
+        Returns:
+            it`s locator
+        """
         return self.page.get_by_text('All Items')
 
     @property
     def about_option_nav(self):
+        """"About" option in Navigation
+
+        Returns:
+            it`s locator
+        """
         return self.page.get_by_text('About')
 
     @property
     def log_out_option_nav(self):
+        """"Log out" option in Navigation
+
+        Returns:
+            it`s locator
+        """
         return self.page.get_by_text('Log out')
 
     @property
     def reset_app_state_option_nav(self):
+        """"Reset App State" option in Navigation
+
+        Returns:
+            it`s locator
+        """
         return self.page.get_by_text('Reset App State')
+
+    @property
+    def cart_icon(self):
+        """Cart icon in Header
+
+        Returns:
+            it`s locator
+        """
+        return self.page.locator('.shopping_cart_link')
 
     # Actions
 
@@ -76,4 +115,10 @@ class NavigationMenu(BasePage):
         Use open_navigation_menu method to open it
         """
         locator = self.about_option_nav
+        locator.click()
+
+    def click_cart_icon(self) -> None:
+        """Clicks on the cart icon
+        """
+        locator = self.cart_icon
         locator.click()
