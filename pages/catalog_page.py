@@ -1,4 +1,4 @@
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page, expect, Locator
 
 from pages.base_page import BasePage
 
@@ -11,47 +11,7 @@ class CatalogPage(BasePage):
     # identificators
 
     @property
-    def add_to_cart_buttons(self):
-        """"Add to cart" buttons on Catalog page
-
-        Returns:
-            it`s locator
-        """
-        return self.page.locator(
-            'button',
-            has_text='add-to-cart-sauce-labs-bolt-t-shirt')
-
-    @property
-    def remove_buttons(self):
-        """"Remove" buttons on Catalog page
-
-        Returns:
-            it`s locator
-        """
-        return self.page.locator(
-            'button',
-            has_text='remove-sauce-labs-backpack')
-
-    @property
-    def product_cards(self):
-        """Cards on Catalog page
-
-        Returns:
-            it`s locator
-        """
-        return self.page.locator('.inventory_item')
-
-    @property
-    def product_image_in_card(self):
-        """Product images on Catalog page
-
-        Returns:
-            it`s locator
-        """
-        return self.page.locator('img.inventory_item_img')
-
-    @property
-    def sort_select(self):
+    def sort_select(self) -> Locator:
         """Sort select on Catalog page
 
         Returns:
@@ -59,51 +19,126 @@ class CatalogPage(BasePage):
         """
         return self.page.locator('.product_sort_container')
 
-    # Actions
+    # > Parent locator
+    @property
+    def product_card(self) -> Locator:
+        """Locator for all available product cards on Catalog page
 
-    def click_on_product(
-            self,
-            data: str,
-    ) -> None:
-        """Clicks on product link by it`s name
+        Returns:
+            Locator: Cards
+        """
+        return self.page.locator('.inventory_item')
+
+    # > Daughter`s locators
+    def product_button(
+        self,
+        data: Locator,
+    ) -> Locator:
+        """"Add to card" or "Remove" button on a specific card on Catalog page.
+        Button which would be click depend`s on product`s state.
 
         Args:
-            data (str): name of product
+            data (Locator): Card`s locator
+
+        Returns:
+            Locator: Button`s locator
         """
-        locator = self.page.get_by_text(data)
-        locator.click()
+        return data.locator('.btn_secondary')
+
+    def product_title(
+        self,
+        data: Locator,
+    ) -> Locator:
+        """Locator of Title on specific card on Catalog page
+
+        Args:
+            data (Locator): Card`s locator
+
+        Returns:
+            Locator: Title`s locator
+        """
+        return data.locator('.inventory_item_name')
+
+    def product_description(
+        self,
+        data: Locator,
+    ) -> Locator:
+        """Locator of Description on specific card on Catalog page
+
+        Args:
+            data (Locator): Card`s locator
+
+        Returns:
+            Locator: Description`s locator
+        """
+        return data.locator('.inventory_item_desc')
+
+    def product_price(
+        self,
+        data: Locator,
+    ) -> Locator:
+        """Locator of Price on specific card on Catalog page
+
+        Args:
+            data (Locator): Card`s locator
+
+        Returns:
+            Locator: Price`s locator
+        """
+        return data.locator('.inventory_item_price')
+
+    def product_image(
+        self,
+        data: Locator,
+    ) -> Locator:
+        """Locator of Image on specific card on Catalog page
+
+        Args:
+            data (Locator): Card`s locator
+
+        Returns:
+            Locator: Image`s locator
+        """
+        return data.locator('.inventory_item_img')
+
+    # Actions
 
     def check_product_card(
             self,
             number: int,
-            data: dict,
+            title: str,
+            description: str,
+            price: str,
     ) -> bool:
         """Checks data on product card
 
         Args:
             number (int): products card number in list
-
-            data (dict): dict should contain next keys:
-            title, description, price
+            title (str): product`s expected title
+            description (str): product`s expected description
+            price (str): product`s expected price (format - $0.00)
 
         Returns:
-            bool: _description_
+            bool: True, if all data correspond to expected one
         """
         number -= 1
-        locator = self.product_cards.nth(number)
-        img_locator = self.product_image_in_card.nth(number)
+        locator = self.product_card.nth(number)
 
-        expect(locator).to_have_text(data['title'])
-        expect(locator).to_have_text(data['description'])
-        expect(locator).to_have_text(data['price'])
+        title_locator = self.product_title(locator)
+        description_locator = self.product_description(locator)
+        price_locator = self.product_price(locator)
+        image_locator = self.product_image(locator)
 
-        expect(img_locator).to_have_attribute('alt', data['title'])
+        expect(title_locator).to_have_text(title)
+        expect(description_locator).to_have_text(description)
+        expect(price_locator).to_have_text(price)
+        expect(image_locator).to_have_attribute('alt', title)
 
-    def click_add_to_card_button(
+    def click_card_button(
             self,
             data: int,
     ) -> None:
-        """Clicks "Add to card" button for specific card.
+        """Clicks "Add to card"/"Remove" button for specific card.
         Attention! If one of the card has "Remove" button,
         card number should be different
 
@@ -111,23 +146,8 @@ class CatalogPage(BasePage):
             data (int): number of the card to be added to cart
         """
         data -= 1
-        locators = self.add_to_cart_buttons.nth(data)
-        locators.click()
-
-    def click_remove_button(
-        self,
-        data: int,
-    ) -> None:
-        """Clicks "Remove" button for specific card.
-        Attention! If one of the card has "Add to card" button,
-        card number should be different
-
-        Args:
-            data (int): number of the card to be removed from cart
-        """
-        data -= 1
-        locators = self.remove_buttons.nth(data)
-        locators.click()
+        locators = self.product_card.nth(data)
+        self.product_button(locators).click()
 
     def choose_sort(
             self,

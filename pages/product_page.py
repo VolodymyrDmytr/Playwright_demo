@@ -1,4 +1,4 @@
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page, expect, Locator
 
 from pages.base_page import BasePage
 
@@ -11,7 +11,7 @@ class ProductPage(BasePage):
     # Identificators
 
     @property
-    def image(self):
+    def image(self) -> Locator:
         """Product`s image on product`s page
 
         Returns:
@@ -20,7 +20,7 @@ class ProductPage(BasePage):
         return self.page.locator('.inventory_details_img')
 
     @property
-    def title(self):
+    def title(self) -> Locator:
         """Product`s title on product`s page
 
         Returns:
@@ -29,7 +29,7 @@ class ProductPage(BasePage):
         return self.page.locator('.inventory_details_desc')
 
     @property
-    def description(self):
+    def description(self) -> Locator:
         """Product`s description on product`s page
 
         Returns:
@@ -38,7 +38,7 @@ class ProductPage(BasePage):
         return self.page.locator('.inventory_details_name')
 
     @property
-    def price(self):
+    def price(self) -> Locator:
         """Product`s price on product`s page
 
         Returns:
@@ -47,7 +47,7 @@ class ProductPage(BasePage):
         return self.page.locator('.inventory_details_price')
 
     @property
-    def button(self):
+    def button(self) -> Locator:
         """Add to card / Remove button on product`s page
         Depends on it`s current state. Because locator is for both
 
@@ -57,7 +57,7 @@ class ProductPage(BasePage):
         return self.page.locator('.btn_primary')
 
     @property
-    def back_button(self):
+    def back_button(self) -> Locator:
         """"Back to products" button on product`s page
         Depends on it`s current state. Because locator is for both
 

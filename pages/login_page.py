@@ -1,4 +1,4 @@
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page, expect, Locator
 
 from pages.base_page import BasePage
 
@@ -10,7 +10,7 @@ class LoginPage(BasePage):
 
     # Indentificators
     @property
-    def username_field(self):
+    def username_field(self) -> Locator:
         """Username field on login page
 
         Returns:
@@ -19,7 +19,7 @@ class LoginPage(BasePage):
         return self.page.get_by_placeholder('Username')
 
     @property
-    def password_field(self):
+    def password_field(self) -> Locator:
         """Password field on login page
 
         Returns:
@@ -28,7 +28,7 @@ class LoginPage(BasePage):
         return self.page.get_by_placeholder('Password')
 
     @property
-    def login_button(self):
+    def login_button(self) -> Locator:
         """Login button on login page
 
         Returns:
@@ -37,7 +37,7 @@ class LoginPage(BasePage):
         return self.page.locator('input.submit-button')
 
     @property
-    def error_message(self):
+    def error_message(self) -> Locator:
         """Block for errors on login page
 
         Returns:

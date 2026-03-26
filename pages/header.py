@@ -1,4 +1,4 @@
-from playwright.sync_api import Page
+from playwright.sync_api import Page, Locator
 
 from pages.base_page import BasePage
 
@@ -11,7 +11,7 @@ class Header(BasePage):
     # Identificators
 
     @property
-    def burger_menu_button(self):
+    def burger_menu_button(self) -> Locator:
         """Burger menu button in Header
 
         Returns:
@@ -20,7 +20,7 @@ class Header(BasePage):
         return self.page.get_by_alt_text('Open Menu')
 
     @property
-    def close_navigation(self):
+    def close_navigation(self) -> Locator:
         """Close button button in Navigation
 
         Returns:
@@ -29,7 +29,7 @@ class Header(BasePage):
         return self.page.get_by_alt_text('Close Menu')
 
     @property
-    def all_items_option_nav(self):
+    def all_items_option_nav(self) -> Locator:
         """"All items" option in Navigation
 
         Returns:
@@ -38,7 +38,7 @@ class Header(BasePage):
         return self.page.get_by_text('All Items')
 
     @property
-    def about_option_nav(self):
+    def about_option_nav(self) -> Locator:
         """"About" option in Navigation
 
         Returns:
@@ -47,7 +47,7 @@ class Header(BasePage):
         return self.page.get_by_text('About')
 
     @property
-    def log_out_option_nav(self):
+    def log_out_option_nav(self) -> Locator:
         """"Log out" option in Navigation
 
         Returns:
@@ -56,7 +56,7 @@ class Header(BasePage):
         return self.page.get_by_text('Log out')
 
     @property
-    def reset_app_state_option_nav(self):
+    def reset_app_state_option_nav(self) -> Locator:
         """"Reset App State" option in Navigation
 
         Returns:
@@ -65,7 +65,7 @@ class Header(BasePage):
         return self.page.get_by_text('Reset App State')
 
     @property
-    def cart_icon(self):
+    def cart_icon(self) -> Locator:
         """Cart icon in Header
 
         Returns:
