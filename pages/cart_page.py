@@ -1,4 +1,4 @@
-from playwright.sync_api import Page, expect, Locator
+from playwright.sync_api import expect, Locator
 
 from pages.base_page import BasePage
 
@@ -6,9 +6,27 @@ from pages.base_page import BasePage
 class CartPage(BasePage):
 
     def __init__(self):
-        self.page = Page()
+        super().__init__()
 
     # Locators
+
+    @property
+    def continue_shopping_button(self) -> Locator:
+        """"<- Continue Shopping" button on a cart page
+
+        Returns:
+            Locator: Button`s locator
+        """
+        return self.page.locator('.back')
+
+    @property
+    def checkout_button(self) -> Locator:
+        """"Checkout" button on Cart page
+
+        Returns:
+            Locator: Button`s locator
+        """
+        return self.page.locator('.checkout_button')
 
     # > parent locator
     @property
@@ -122,8 +140,41 @@ class CartPage(BasePage):
         expect(description_locator).to_have_text(description)
         expect(price_locator).to_have_text(price)
 
-    def click_remove_button(self, number: int) -> None:
-        pass
+    def click_remove_button(
+            self,
+            number: int,
+    ) -> None:
+        """Clicks "Remove" button for a specific card on Cart page
 
-    def change_product_amount(self, number: int, data: int) -> None:
-        pass
+        Args:
+            number (int): Card`s number
+        """
+        locator = self.card.nth(number - 1)
+        self.card_button(locator).click()
+
+    def change_product_amount(
+            self,
+            number: int,
+            data: int,
+    ) -> None:
+        """Change amount of a specific product in the cart on Cart page
+
+        Args:
+            number (int): card number
+            data (int): amount of products
+        """
+        number -= 1
+        locator = self.card.nth(number)
+        self.card_amount(locator).fill(data)
+
+    def click_continue_shopping_button(self) -> None:
+        """Clicks "Continue shopping" button on Card page
+        """
+        locator = self.continue_shopping_button
+        locator.click()
+
+    def click_checkout_button(self) -> None:
+        """Clicks "Checkout" button on Card page
+        """
+        locator = self.checkout_button
+        locator.click()

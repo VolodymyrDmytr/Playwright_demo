@@ -1,4 +1,4 @@
-from playwright.sync_api import Page, Locator
+from playwright.sync_api import Locator
 
 from pages.base_page import BasePage
 
@@ -6,7 +6,7 @@ from pages.base_page import BasePage
 class Header(BasePage):
 
     def __init__(self):
-        self.page = Page()
+        super().__init__()
 
     # Identificators
 

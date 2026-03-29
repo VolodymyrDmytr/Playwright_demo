@@ -1,4 +1,4 @@
-from playwright.sync_api import Page, expect, Locator
+from playwright.sync_api import expect, Locator
 
 from pages.base_page import BasePage
 
@@ -6,7 +6,7 @@ from pages.base_page import BasePage
 class LoginPage(BasePage):
 
     def __init__(self):
-        self.page = Page()
+        super().__init__()
 
     # Indentificators
     @property
