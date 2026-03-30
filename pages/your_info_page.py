@@ -89,7 +89,10 @@ class YourInfoPage(BasePage):
 
     # Helping methods
 
-    def _locator_by_field_name(self, data: str,) -> Locator:
+    def _locator_by_field_name(
+            self,
+            data: str,
+    ) -> Locator:
         """Help method to get locator by filed`s name on Your Info page
 
         Args:

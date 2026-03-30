@@ -152,20 +152,20 @@ class CartPage(BasePage):
         locator = self.card.nth(number - 1)
         self.card_button(locator).click()
 
-    def change_product_amount(
-            self,
-            number: int,
-            data: int,
-    ) -> None:
-        """Change amount of a specific product in the cart on Cart page
+    # def change_product_amount(
+    #         self,
+    #         number: int,
+    #         data: int,
+    # ) -> None:
+    #     """Change amount of a specific product in the cart on Cart page
 
-        Args:
-            number (int): card number
-            data (int): amount of products
-        """
-        number -= 1
-        locator = self.card.nth(number)
-        self.card_amount(locator).fill(data)
+    #     Args:
+    #         number (int): card number
+    #         data (int): amount of products
+    #     """
+    #     number -= 1
+    #     locator = self.card.nth(number)
+    #     self.card_amount(locator).fill(data)
 
     def click_continue_shopping_button(self) -> None:
         """Clicks "Continue shopping" button on Card page
