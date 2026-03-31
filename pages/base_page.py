@@ -1,29 +1,12 @@
-from playwright.sync_api import Page, expect, Locator
+from playwright.sync_api import Page, expect
 from config.constants import const
+from config.locators import univ_locators
 
 
 class BasePage:
 
     def __intit__(self):
         self.page = Page()
-
-    # Locators
-
-    def locator_by_text(
-        self,
-        data: str,
-    ) -> Locator:
-        """Locator of a desired title (universal)
-
-        Args:
-            data (str): Product title
-
-        Returns:
-            Locator: Title's locator
-        """
-        return self.page.get_by_text(data)
-
-    # Actions
 
     def go_to_page(
             self,
@@ -68,5 +51,5 @@ class BasePage:
         Args:
             data (str): name of product
         """
-        locator = self.locator_by_text(data)
+        locator = univ_locators.locator_by_text(data)
         locator.click()

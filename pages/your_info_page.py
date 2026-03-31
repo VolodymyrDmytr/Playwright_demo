@@ -1,91 +1,13 @@
 from pages.base_page import BasePage
 
 from playwright.sync_api import expect, Locator
+from config.locators import your_info_locators
 
 
 class YourInfoPage(BasePage):
 
     def __init__(self):
         super().__init__()
-
-    # Locators
-
-    @property
-    def first_name_field(self) -> Locator:
-        """Locator of the "First Name" field on Your Info Page
-
-        Returns:
-            Locator: Field`s locator
-        """
-        return self.page.get_by_placeholder('First Name')
-
-    @property
-    def last_name_field(self) -> Locator:
-        """Locator of the "Last Name" field on Your Info Page
-
-        Returns:
-            Locator: Field`s locator
-        """
-        return self.page.get_by_placeholder('Last Name')
-
-    @property
-    def postal_code_field(self) -> Locator:
-        """Locator of the "Zip/Postal Code" field on Your Info Page
-
-        Returns:
-            Locator: Field`s locator
-        """
-        return self.page.get_by_placeholder('Zip/Postal Code')
-
-    @property
-    def cancel_button(self) -> Locator:
-        """Locator of the "Cancel" button on Your Info Page
-
-        Returns:
-            Locator: Button`s locator
-        """
-        return self.page.locator('.cart_cancel_link')
-
-    @property
-    def continue_button(self):
-        """Locator of the "Continue" button on Your Info Page
-
-        Returns:
-            Locator: Button`s locator
-        """
-        return self.page.locator('.submit-button')
-
-    @property
-    def error_massege(self) -> Locator:
-        """Locator of the error message block on Your Info Page
-
-        Returns:
-            Locator: Block`s locator
-        """
-        return self.page.locator('.error-message-container')
-
-    @property
-    def close_error_message_button(self) -> Locator:
-        """Locator of the error message close button on Your Info Page
-
-        Returns:
-            Locator: Button`s locator
-        """
-        return self.page.locator('.error-button')
-
-    def error_icons_in_fields(
-            self,
-            data: Locator,
-    ) -> Locator:
-        """Locator of the error icon in fields on Your Info Page
-
-        Args:
-            data (Locator): Field`s locator
-
-        Returns:
-            Locator: Icon`s locator
-        """
-        return data.locator('.svg-inline--fa')
 
     # Helping methods
 
@@ -102,11 +24,11 @@ class YourInfoPage(BasePage):
             Locator: Field`s locator
         """
         if data == 'First name':
-            return self.first_name_field
+            return your_info_locators.first_name_field
         elif data == 'Last name':
-            return self.last_name_field
+            return your_info_locators.last_name_field
         elif data == 'Postal code':
-            return self.postal_code_field
+            return your_info_locators.postal_code_field
 
     # Actions
 
@@ -119,7 +41,7 @@ class YourInfoPage(BasePage):
         Args:
             data (str): Text to be inputed
         """
-        locator = self.first_name_field
+        locator = your_info_locators.first_name_field
         locator.fill(data)
 
     def fill_last_name_field(
@@ -131,7 +53,7 @@ class YourInfoPage(BasePage):
         Args:
             data (str): Text to be inputed
         """
-        locator = self.last_name_field
+        locator = your_info_locators.last_name_field
         locator.fill(data)
 
     def fill_postal_code_field(
@@ -143,19 +65,19 @@ class YourInfoPage(BasePage):
         Args:
             data (str): Text to be inputed
         """
-        locator = self.postal_code_field
+        locator = your_info_locators.postal_code_field
         locator.fill(data)
 
     def press_cancel_button(self) -> None:
         """Pressing 'Cancel' button on Your Info page
         """
-        locator = self.cancel_button
+        locator = your_info_locators.cancel_button
         locator.click()
 
     def press_continue_button(self) -> None:
         """Pressing 'Continue' button on Your Info page
         """
-        locator = self.continue_button
+        locator = your_info_locators.continue_button
         locator.click()
 
     def check_error_icon_in_field(
@@ -172,7 +94,8 @@ class YourInfoPage(BasePage):
         """
         locator = self._locator_by_field_name(data)
 
-        expect(self.error_icons_in_fields(locator)).to_be_visible()
+        expect(your_info_locators.error_icons_in_fields(locator)
+               ).to_be_visible()
 
     def check_error_text(
             self,
@@ -186,13 +109,13 @@ class YourInfoPage(BasePage):
         Returns:
             bool: True, if error text is as expected
         """
-        locator = self.error_massege
+        locator = your_info_locators.error_massege
         expect(locator).to_have_text(data)
 
     def close_error_block(self) -> None:
         """Closing error massege block on Your Info page
         """
-        locator = self.close_error_message_button
+        locator = your_info_locators.close_error_message_button
         locator.click()
 
     def check_data_in_field(

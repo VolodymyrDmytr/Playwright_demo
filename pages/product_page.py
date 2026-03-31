@@ -1,6 +1,7 @@
-from playwright.sync_api import expect, Locator
+from playwright.sync_api import expect
 
 from pages.base_page import BasePage
+from config.locators import product_locators
 
 
 class ProductPage(BasePage):
@@ -8,65 +9,6 @@ class ProductPage(BasePage):
     def __init__(self):
         super().__init__()
 
-    # Identificators
-
-    @property
-    def image(self) -> Locator:
-        """Product`s image on product`s page
-
-        Returns:
-            locator
-        """
-        return self.page.locator('.inventory_details_img')
-
-    @property
-    def title(self) -> Locator:
-        """Product`s title on product`s page
-
-        Returns:
-            locator
-        """
-        return self.page.locator('.inventory_details_desc')
-
-    @property
-    def description(self) -> Locator:
-        """Product`s description on product`s page
-
-        Returns:
-            locator
-        """
-        return self.page.locator('.inventory_details_name')
-
-    @property
-    def price(self) -> Locator:
-        """Product`s price on product`s page
-
-        Returns:
-            locator
-        """
-        return self.page.locator('.inventory_details_price')
-
-    @property
-    def button(self) -> Locator:
-        """Add to card / Remove button on product`s page
-        Depends on it`s current state. Because locator is for both
-
-        Returns:
-            locator
-        """
-        return self.page.locator('.btn_primary')
-
-    @property
-    def back_button(self) -> Locator:
-        """"Back to products" button on product`s page
-        Depends on it`s current state. Because locator is for both
-
-        Returns:
-            locator
-        """
-        return self.page.locator('.btn_secondary')
-
-    # Actions
     def check_product_title(
             self,
             data: str,
@@ -79,7 +21,7 @@ class ProductPage(BasePage):
         Returns:
             bool: True, if title is as expected
         """
-        locator = self.title
+        locator = product_locators.title
         expect(locator).to_have_text(data)
 
     def check_product_description(
@@ -95,7 +37,7 @@ class ProductPage(BasePage):
         Returns:
             bool: True, if description is as expected
         """
-        locator = self.description
+        locator = product_locators.description
         expect(locator).to_have_text(data)
 
     def check_product_price(
@@ -110,7 +52,7 @@ class ProductPage(BasePage):
         Returns:
             bool: True, if price is as expected
         """
-        locator = self.price
+        locator = product_locators.price
         expect(locator).to_have_text(data)
 
     def click_status_button(
@@ -120,7 +62,7 @@ class ProductPage(BasePage):
         It`s depends on it`s current state.
         on product`s page
         """
-        locator = self.button
+        locator = product_locators.button
         locator.click()
 
     def click_back_to_products_button(
@@ -128,5 +70,5 @@ class ProductPage(BasePage):
     ) -> None:
         """Click "Back to products" button on product`s page
         """
-        locator = self.back_button
+        locator = product_locators.back_button
         locator.click()
