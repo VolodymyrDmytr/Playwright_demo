@@ -1,13 +1,14 @@
 from pages.base_page import BasePage
 
-from playwright.sync_api import expect
-from config.locators import overview_locators
+from playwright.sync_api import expect, Page
+from config.locators import OverviewLocators
 
 
 class OverviewPage(BasePage):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, page: Page):
+        super().__init__(page)
+        self.locators = OverviewLocators(self.page)
 
     def check_cart_card(
             self,
@@ -28,11 +29,11 @@ class OverviewPage(BasePage):
             bool: True, if data matches expectations
         """
         number -= 1
-        locator = overview_locators.card.nth(number)
+        locator = self.locators.card.nth(number)
 
-        title_locator = overview_locators.card_title(locator)
-        description_locator = overview_locators.card_description(locator)
-        price_locator = overview_locators.card_price(locator)
+        title_locator = self.locators.card_title(locator)
+        description_locator = self.locators.card_description(locator)
+        price_locator = self.locators.card_price(locator)
 
         expect(title_locator).to_have_text(title)
         expect(description_locator).to_have_text(description)
@@ -45,26 +46,26 @@ class OverviewPage(BasePage):
             bool: True, if actual match expected
         """
         # Getting actual prices
-        tax_locator = overview_locators.tax
+        tax_locator = self.locators.tax
         taxes = tax_locator.text_content().replace('Tax $', '')
         taxes = int(taxes)
 
-        item_total_locator = overview_locators.items_total
+        item_total_locator = self.locators.items_total
         item_total = item_total_locator.text_content().replace(
             'Item total: $', '')
         item_total = int(item_total)
 
-        total_price_locator = overview_locators.total_price
+        total_price_locator = self.locators.total_price
         total_price = total_price_locator.text_content().replace(
             'Total: $', '')
         total_price = int(total_price)
 
         # Calculating actual price
         expected_item_price = 0
-        cards_locators = overview_locators.card
+        cards_locators = self.locators.card
         for i in range(len(cards_locators) - 1):
             locator = cards_locators.nth(i)
-            item_price = overview_locators.card_price(locator).text_content(
+            item_price = self.locators.card_price(locator).text_content(
             ).replace(
                 '$', '')
             item_price = int(item_price)
@@ -84,13 +85,13 @@ class OverviewPage(BasePage):
     def click_cancel_button(self) -> None:
         """Click`s "Cancel" button on Overview page
         """
-        locator = overview_locators.cancel_button
+        locator = self.locators.cancel_button
         locator.click()
 
     def click_finish_button(self) -> None:
         """Click`s "Finish" button on Overview page
         """
-        locator = overview_locators.finish_button
+        locator = self.locators.finish_button
         locator.click()
 
     def check_shipping_method(
@@ -105,5 +106,5 @@ class OverviewPage(BasePage):
         Returns:
             bool: True, if shipping method matches expected result
         """
-        locator = overview_locators.delivery_method
+        locator = self.locators.delivery_method
         expect(locator).to_have_text(data)

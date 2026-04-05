@@ -1,13 +1,14 @@
 from pages.base_page import BasePage
 
-from playwright.sync_api import expect, Locator
-from config.locators import your_info_locators
+from playwright.sync_api import expect, Locator, Page
+from config.locators import YourInfoLocators
 
 
 class YourInfoPage(BasePage):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, page: Page):
+        super().__init__(page)
+        self.locators = YourInfoLocators(self.page)
 
     # Helping methods
 
@@ -24,11 +25,11 @@ class YourInfoPage(BasePage):
             Locator: Field`s locator
         """
         if data == 'First name':
-            return your_info_locators.first_name_field
+            return self.locators.first_name_field
         elif data == 'Last name':
-            return your_info_locators.last_name_field
+            return self.locators.last_name_field
         elif data == 'Postal code':
-            return your_info_locators.postal_code_field
+            return self.locators.postal_code_field
 
     # Actions
 
@@ -41,7 +42,7 @@ class YourInfoPage(BasePage):
         Args:
             data (str): Text to be inputed
         """
-        locator = your_info_locators.first_name_field
+        locator = self.locators.first_name_field
         locator.fill(data)
 
     def fill_last_name_field(
@@ -53,7 +54,7 @@ class YourInfoPage(BasePage):
         Args:
             data (str): Text to be inputed
         """
-        locator = your_info_locators.last_name_field
+        locator = self.locators.last_name_field
         locator.fill(data)
 
     def fill_postal_code_field(
@@ -65,19 +66,19 @@ class YourInfoPage(BasePage):
         Args:
             data (str): Text to be inputed
         """
-        locator = your_info_locators.postal_code_field
+        locator = self.locators.postal_code_field
         locator.fill(data)
 
     def press_cancel_button(self) -> None:
         """Pressing 'Cancel' button on Your Info page
         """
-        locator = your_info_locators.cancel_button
+        locator = self.locators.cancel_button
         locator.click()
 
     def press_continue_button(self) -> None:
         """Pressing 'Continue' button on Your Info page
         """
-        locator = your_info_locators.continue_button
+        locator = self.locators.continue_button
         locator.click()
 
     def check_error_icon_in_field(
@@ -94,8 +95,8 @@ class YourInfoPage(BasePage):
         """
         locator = self._locator_by_field_name(data)
 
-        expect(your_info_locators.error_icons_in_fields(locator)
-               ).to_be_visible()
+        expect(
+            self.locators.error_icons_in_fields(locator)).to_be_visible()
 
     def check_error_text(
             self,
@@ -109,13 +110,13 @@ class YourInfoPage(BasePage):
         Returns:
             bool: True, if error text is as expected
         """
-        locator = your_info_locators.error_massege
+        locator = self.locators.error_massege
         expect(locator).to_have_text(data)
 
     def close_error_block(self) -> None:
         """Closing error massege block on Your Info page
         """
-        locator = your_info_locators.close_error_message_button
+        locator = self.locators.close_error_message_button
         locator.click()
 
     def check_data_in_field(

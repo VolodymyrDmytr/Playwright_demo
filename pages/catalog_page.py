@@ -1,13 +1,14 @@
-from playwright.sync_api import expect
+from playwright.sync_api import expect, Page
 
 from pages.base_page import BasePage
-from config.locators import catalog_locators
+from config.locators import CatalogLocators
 
 
 class CatalogPage(BasePage):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, page: Page):
+        super().__init__(page)
+        self.locators = CatalogLocators(self.page)
 
     def check_product_card(
             self,
@@ -28,12 +29,12 @@ class CatalogPage(BasePage):
             bool: True, if all data correspond to expected one
         """
         number -= 1
-        locator = catalog_locators.product_card.nth(number)
+        locator = self.locators.product_card.nth(number)
 
-        title_locator = catalog_locators.product_title(locator)
-        description_locator = catalog_locators.product_description(locator)
-        price_locator = catalog_locators.product_price(locator)
-        image_locator = catalog_locators.product_image(locator)
+        title_locator = self.locators.product_title(locator)
+        description_locator = self.locators.product_description(locator)
+        price_locator = self.locators.product_price(locator)
+        image_locator = self.locators.product_image(locator)
 
         expect(title_locator).to_have_text(title)
         expect(description_locator).to_have_text(description)
@@ -52,8 +53,8 @@ class CatalogPage(BasePage):
             data (int): number of the card to be added to cart
         """
         data -= 1
-        locators = catalog_locators.product_card.nth(data)
-        catalog_locators.product_button(locators).click()
+        locators = self.locators.product_card.nth(data)
+        self.locators.product_button(locators).click()
 
     def choose_sort(
             self,
@@ -64,5 +65,5 @@ class CatalogPage(BasePage):
         Args:
             data (str): Should be available sort type
         """
-        locator = catalog_locators.sort_select
+        locator = self.locators.sort_select
         locator.select_option(value=data)

@@ -1,12 +1,13 @@
 from playwright.sync_api import Page, expect
 from config.constants import const
-from config.locators import univ_locators
+from config.locators import UniversalLocators
 
 
 class BasePage:
 
-    def __intit__(self):
-        self.page = Page()
+    def __init__(self, page: Page):
+        self.page = page
+        self.locators = UniversalLocators(self.page)
 
     def go_to_page(
             self,
@@ -51,5 +52,5 @@ class BasePage:
         Args:
             data (str): name of product
         """
-        locator = univ_locators.locator_by_text(data)
+        locator = self.locators.locator_by_text(data)
         locator.click()

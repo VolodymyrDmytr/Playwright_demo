@@ -1,13 +1,14 @@
-from playwright.sync_api import expect
+from playwright.sync_api import expect, Page
 
 from pages.base_page import BasePage
-from config.locators import product_locators
+from config.locators import ProductLocators
 
 
 class ProductPage(BasePage):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, page: Page):
+        super().__init__(page)
+        self.locators = ProductLocators(self.page)
 
     def check_product_title(
             self,
@@ -21,7 +22,7 @@ class ProductPage(BasePage):
         Returns:
             bool: True, if title is as expected
         """
-        locator = product_locators.title
+        locator = self.locators.title
         expect(locator).to_have_text(data)
 
     def check_product_description(
@@ -37,7 +38,7 @@ class ProductPage(BasePage):
         Returns:
             bool: True, if description is as expected
         """
-        locator = product_locators.description
+        locator = self.locators.description
         expect(locator).to_have_text(data)
 
     def check_product_price(
@@ -52,7 +53,7 @@ class ProductPage(BasePage):
         Returns:
             bool: True, if price is as expected
         """
-        locator = product_locators.price
+        locator = self.locators.price
         expect(locator).to_have_text(data)
 
     def click_status_button(
@@ -62,7 +63,7 @@ class ProductPage(BasePage):
         It`s depends on it`s current state.
         on product`s page
         """
-        locator = product_locators.button
+        locator = self.locators.button
         locator.click()
 
     def click_back_to_products_button(
@@ -70,5 +71,5 @@ class ProductPage(BasePage):
     ) -> None:
         """Click "Back to products" button on product`s page
         """
-        locator = product_locators.back_button
+        locator = self.locators.back_button
         locator.click()

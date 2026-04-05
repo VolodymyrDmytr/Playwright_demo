@@ -1,20 +1,21 @@
 from pages.base_page import BasePage
 
-from playwright.sync_api import expect
-from config.locators import done_locators
+from playwright.sync_api import expect, Page
+from config.locators import DoneLocators
 
 
 class DonePage(BasePage):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, page: Page):
+        super().__init__(page)
+        self.locators = DoneLocators(self.page)
 
     # Actions
 
     def click_back_to_home_button(self) -> None:
         """Click`s on "Back Home" button on Done page
         """
-        locator = done_locators.back_home_button
+        locator = self.locators.back_home_button
         locator.click()
 
     # Checks
@@ -31,7 +32,7 @@ class DonePage(BasePage):
         Returns:
             bool: True, if title text matches expected title
         """
-        locator = done_locators.page_title
+        locator = self.locators.page_title
         expect(locator).to_have_text(data)
 
     def check_text(
@@ -46,7 +47,7 @@ class DonePage(BasePage):
         Returns:
             bool: True, if text matches expected text
         """
-        locator = done_locators.page_text
+        locator = self.locators.page_text
         expect(locator).to_have_text(data)
 
     def check_image(
@@ -61,5 +62,5 @@ class DonePage(BasePage):
         Returns:
             bool: True, if alt matches expected alt
         """
-        locator = done_locators.image
+        locator = self.locators.image
         expect(locator).to_have_attribute('alt', data)

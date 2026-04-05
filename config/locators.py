@@ -3,8 +3,8 @@ from playwright.sync_api import Page, Locator
 
 class UniversalLocators:
 
-    def __init__(self):
-        self.page = Page()
+    def __init__(self, page: Page):
+        self.page = page
 
     def locator_by_text(
         self,
@@ -22,9 +22,6 @@ class UniversalLocators:
 
 
 class LoginLocators(UniversalLocators):
-
-    def __init__(self):
-        super().__init__()
 
     @property
     def username_field(self) -> Locator:
@@ -64,9 +61,6 @@ class LoginLocators(UniversalLocators):
 
 
 class HeaderLocators(UniversalLocators):
-
-    def __init__(self):
-        super().__init__()
 
     @property
     def burger_menu_button(self) -> Locator:
@@ -133,9 +127,6 @@ class HeaderLocators(UniversalLocators):
 
 
 class CartLocators(UniversalLocators):
-
-    def __init__(self):
-        super().__init__()
 
     @property
     def continue_shopping_button(self) -> Locator:
@@ -240,9 +231,6 @@ class CartLocators(UniversalLocators):
 
 class CatalogLocators(UniversalLocators):
 
-    def __init__(self):
-        super().__init__()
-
     @property
     def sort_select(self) -> Locator:
         """Sort select on Catalog page
@@ -337,9 +325,6 @@ class CatalogLocators(UniversalLocators):
 
 class DoneLocators(UniversalLocators):
 
-    def __init__(self):
-        super().__init__()
-
     @property
     def back_home_button(self) -> Locator:
         """"Back Home" button on Done page
@@ -378,9 +363,6 @@ class DoneLocators(UniversalLocators):
 
 
 class OverviewLocators(UniversalLocators):
-
-    def __init__(self):
-        super().__init__()
 
     @property
     def cancel_button(self) -> Locator:
@@ -521,9 +503,6 @@ class OverviewLocators(UniversalLocators):
 
 class ProductLocators(UniversalLocators):
 
-    def __init__(self):
-        super().__init__()
-
     @property
     def image(self) -> Locator:
         """Product`s image on product`s page
@@ -582,9 +561,6 @@ class ProductLocators(UniversalLocators):
 
 
 class YourInfoLocators(UniversalLocators):
-
-    def __init__(self):
-        super().__init__()
 
     @property
     def first_name_field(self) -> Locator:
@@ -662,15 +638,3 @@ class YourInfoLocators(UniversalLocators):
             Locator: Icon`s locator
         """
         return data.locator('.svg-inline--fa')
-
-
-# Objects to export
-univ_locators = UniversalLocators()
-login_locators = LoginLocators()
-header_locators = HeaderLocators()
-cart_locators = CartLocators()
-catalog_locators = CatalogLocators()
-done_locators = DoneLocators()
-overview_locators = OverviewLocators()
-product_locators = ProductLocators()
-your_info_locators = YourInfoLocators()
