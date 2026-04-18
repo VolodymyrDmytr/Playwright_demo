@@ -3,6 +3,10 @@ from playwright.sync_api import expect, Page
 from pages.base_page import BasePage
 from config.locators import CatalogLocators
 
+import logging
+
+logger = logging.getLogger('Catalog page')
+
 
 class CatalogPage(BasePage):
 
@@ -35,6 +39,15 @@ class CatalogPage(BasePage):
         description_locator = self.locators.product_description(locator)
         price_locator = self.locators.product_price(locator)
         image_locator = self.locators.product_image(locator)
+
+        logger.debug(
+            """
+            Actual: %s, %s, %s
+            Expected: %s, %s, %s
+            """,
+            title_locator.text_content(), description_locator.text_content(),
+            price_locator.text_content(), title, description, price
+        )
 
         expect(title_locator).to_have_text(title)
         expect(description_locator).to_have_text(description)

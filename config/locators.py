@@ -18,7 +18,7 @@ class UniversalLocators:
         Returns:
             Locator: Title's locator
         """
-        return self.page.get_by_text(data)
+        return self.page.locator('.inventory_item_name').get_by_text(data)
 
 
 class LoginLocators(UniversalLocators):
@@ -59,6 +59,25 @@ class LoginLocators(UniversalLocators):
         """
         return self.page.locator('div.error-message-container')
 
+    @property
+    def close_error_button(self) -> Locator:
+        """Locator for 'X' button in error message block
+        *Needs to close the block
+
+        Returns:
+            Locator: It`s locator
+        """
+        return self.page.locator('.error-button')
+
+    @property
+    def error_in_field(self) -> Locator:
+        """Locators for error icons in fields
+
+        Returns:
+            Locator: Locators for error icons
+        """
+        return self.page.locator('.error_icon')
+
 
 class HeaderLocators(UniversalLocators):
 
@@ -69,7 +88,7 @@ class HeaderLocators(UniversalLocators):
         Returns:
             it`s locator
         """
-        return self.page.get_by_alt_text('Open Menu')
+        return self.page.get_by_text('Open Menu')
 
     @property
     def close_navigation(self) -> Locator:
@@ -78,7 +97,7 @@ class HeaderLocators(UniversalLocators):
         Returns:
             it`s locator
         """
-        return self.page.get_by_alt_text('Close Menu')
+        return self.page.get_by_text('Close Menu')
 
     @property
     def all_items_option_nav(self) -> Locator:
@@ -105,7 +124,7 @@ class HeaderLocators(UniversalLocators):
         Returns:
             it`s locator
         """
-        return self.page.get_by_text('Log out')
+        return self.page.get_by_text('Logout')
 
     @property
     def reset_app_state_option_nav(self) -> Locator:
@@ -124,6 +143,15 @@ class HeaderLocators(UniversalLocators):
             it`s locator
         """
         return self.page.locator('.shopping_cart_link')
+
+    @property
+    def cart_bage(self) -> Locator:
+        """Amount of products in the card bage on Cart icon on Catalog page
+
+        Returns:
+            Locator: It`s locator
+        """
+        return self.page.locator('.shopping_cart_badge')
 
 
 class CartLocators(UniversalLocators):
@@ -264,7 +292,7 @@ class CatalogLocators(UniversalLocators):
         Returns:
             Locator: Button`s locator
         """
-        return data.locator('.btn_secondary')
+        return data.locator('button')
 
     def product_title(
         self,
@@ -320,7 +348,7 @@ class CatalogLocators(UniversalLocators):
         Returns:
             Locator: Image`s locator
         """
-        return data.locator('.inventory_item_img')
+        return data.locator('.inventory_item_img').locator('img')
 
 
 class DoneLocators(UniversalLocators):
