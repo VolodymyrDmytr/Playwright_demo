@@ -32,7 +32,6 @@ class CatalogPage(BasePage):
         Returns:
             bool: True, if all data correspond to expected one
         """
-        number -= 1
         locator = self.locators.product_card.nth(number)
 
         title_locator = self.locators.product_title(locator)
@@ -65,7 +64,6 @@ class CatalogPage(BasePage):
         Args:
             data (int): number of the card to be added to cart
         """
-        data -= 1
         locators = self.locators.product_card.nth(data)
         self.locators.product_button(locators).click()
 

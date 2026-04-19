@@ -104,3 +104,26 @@ def open_catalog_page(page: Page):
     user.check_url(const.catalog_url)
 
     yield
+
+
+@pytest.fixture()
+def open_cart_page_with_products(page: Page):
+    login = LoginPage(page)
+    catalog = CatalogPage(page)
+    header = Header(page)
+
+    login.go_to_page(const.login_url)
+
+    login.fill_username_field(param.standart_user[0])
+    login.fill_password_field(param.standart_user[1])
+
+    login.press_login_button()
+
+    for i in range(6):
+        catalog.click_card_button(i)
+
+    header.click_cart_icon()
+
+    header.check_url(const.cart_url)
+
+    yield

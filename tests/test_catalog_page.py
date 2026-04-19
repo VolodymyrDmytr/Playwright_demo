@@ -13,7 +13,7 @@ logger = logging.getLogger('Test Catalog Page')
 def test_product_cards_data(catalog, open_catalog_page):
     for i in range(6):
         catalog.check_product_card(
-            i+1,
+            i,
             param.products[i]['title'],
             param.products[i]['description'],
             param.products[i]['price'],
@@ -60,7 +60,7 @@ def test_sorting(catalog, sort_type, open_catalog_page):
 
     for i in range(6):
         catalog.check_product_card(
-            i+1,
+            i,
             product_data[i]['title'],
             product_data[i]['description'],
             product_data[i]['price'],

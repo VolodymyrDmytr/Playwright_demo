@@ -225,7 +225,7 @@ class CartLocators(UniversalLocators):
         Returns:
             Locator: price`s locator
         """
-        return data.locator('.item_pricebar')
+        return data.locator('.inventory_item_price')
 
     def card_button(
         self,

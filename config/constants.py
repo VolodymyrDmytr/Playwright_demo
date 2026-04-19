@@ -6,6 +6,7 @@ class Constants:
     catalog_url = login_url + 'inventory.html'
     cart_url = login_url + 'cart.html'
     about_url = 'https://saucelabs.com/'
+    checkout_1st_step_url = login_url + 'checkout-step-one.html'
 
     def product_url(self, product_id: int) -> str:
         """Return product URL depending on it`s ID

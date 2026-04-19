@@ -1,7 +1,10 @@
 from playwright.sync_api import expect, Page
+import logging
 
 from pages.base_page import BasePage
 from config.locators import CartLocators
+
+logger = logging.getLogger(__name__)
 
 
 class CartPage(BasePage):
@@ -13,6 +16,7 @@ class CartPage(BasePage):
     def check_cart_card(
             self,
             number: int,
+            amount: int,
             title: str,
             description: str,
             price: str,
@@ -21,6 +25,7 @@ class CartPage(BasePage):
 
         Args:
             number (int): card number
+            amount (int): product amount in the cart
             title (str): product`s title
             description (str): product`s description
             price (str): product`s price
@@ -28,16 +33,37 @@ class CartPage(BasePage):
         Returns:
             bool: True, if data matches expectations
         """
-        number -= 1
         locator = self.locators.card.nth(number)
 
         title_locator = self.locators.card_title(locator)
+        amount_locator = self.locators.card_amount(locator)
         description_locator = self.locators.card_description(locator)
         price_locator = self.locators.card_price(locator)
 
+        logger.debug(
+            """
+            Actual: %s, %s, %s, %s, %s
+            Expected: %s, %s, %s, %s, %s
+            """,
+            number, title_locator.text_content(),
+            amount_locator.text_content(), description_locator.text_content(),
+            price_locator.text_content(),
+            number, title, amount, description, price
+        )
+
         expect(title_locator).to_have_text(title)
+        expect(amount_locator).to_have_text(str(amount))
         expect(description_locator).to_have_text(description)
         expect(price_locator).to_have_text(price)
+
+    def check_no_cards(self) -> bool:
+        """Checks cards if cards are present on the Cart page
+
+        Returns:
+            bool: True, if cards are not present (visible)
+        """
+        locator = self.locators.card
+        expect(locator).not_to_be_visible()
 
     def click_remove_button(
             self,
