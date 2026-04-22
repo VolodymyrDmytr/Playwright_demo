@@ -597,7 +597,7 @@ class YourInfoLocators(UniversalLocators):
         Returns:
             Locator: Field`s locator
         """
-        return self.page.get_by_placeholder('First Name')
+        return self.page.get_by_placeholder("First Name")
 
     @property
     def last_name_field(self) -> Locator:
@@ -655,14 +655,14 @@ class YourInfoLocators(UniversalLocators):
 
     def error_icons_in_fields(
             self,
-            data: Locator,
+            data: int,
     ) -> Locator:
         """Locator of the error icon in fields on Your Info Page
 
         Args:
-            data (Locator): Field`s locator
+            data (int): Field number (0 - 2)
 
         Returns:
             Locator: Icon`s locator
         """
-        return data.locator('.svg-inline--fa')
+        return self.page.locator('.form_group').nth(data).locator('.error_icon')

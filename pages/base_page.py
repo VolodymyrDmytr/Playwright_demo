@@ -54,3 +54,6 @@ class BasePage:
         """
         locator = self.locators.locator_by_text(data)
         locator.click()
+
+    def sys_back(self) -> None:
+        self.page.go_back()

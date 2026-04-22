@@ -15,6 +15,7 @@ from config.logger_config import setup_logging
 
 from config.constants import const
 from config.parameters import param
+from config.faker_settings import faker
 
 
 logger = setup_logging()
@@ -91,10 +92,10 @@ def open_login_page(page: Page):
 
 
 @pytest.fixture()
-def open_catalog_page(page: Page):
+def open_catalog_page(page: Page, open_login_page):
     user = LoginPage(page)
 
-    user.go_to_page(const.login_url)
+    # user.go_to_page(const.login_url)
 
     user.fill_username_field(param.standart_user[0])
     user.fill_password_field(param.standart_user[1])
@@ -107,17 +108,17 @@ def open_catalog_page(page: Page):
 
 
 @pytest.fixture()
-def open_cart_page_with_products(page: Page):
-    login = LoginPage(page)
+def open_cart_page_with_products(page: Page, open_catalog_page):
+    # login = LoginPage(page)
     catalog = CatalogPage(page)
     header = Header(page)
 
-    login.go_to_page(const.login_url)
+    # login.go_to_page(const.login_url)
 
-    login.fill_username_field(param.standart_user[0])
-    login.fill_password_field(param.standart_user[1])
+    # login.fill_username_field(param.standart_user[0])
+    # login.fill_password_field(param.standart_user[1])
 
-    login.press_login_button()
+    # login.press_login_button()
 
     for i in range(6):
         catalog.click_card_button(i)
@@ -125,5 +126,29 @@ def open_cart_page_with_products(page: Page):
     header.click_cart_icon()
 
     header.check_url(const.cart_url)
+
+    yield
+
+
+@pytest.fixture()
+def open_your_info_page(page: Page, open_cart_page_with_products):
+    cart = CartPage(page)
+    cart.click_checkout_button()
+    cart.check_url(const.checkout_1st_step_url)
+
+    yield
+
+
+@pytest.fixture()
+def open_overview_page(page: Page, open_your_info_page):
+    info = YourInfoPage(page)
+
+    info.fill_first_name_field(faker.first_name())
+    info.fill_last_name_field(faker.last_name())
+    info.fill_postal_code_field(faker.postcode())
+
+    info.press_continue_button()
+
+    info.check_url(const.checkout_2nd_step_url)
 
     yield

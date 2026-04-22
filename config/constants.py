@@ -7,6 +7,8 @@ class Constants:
     cart_url = login_url + 'cart.html'
     about_url = 'https://saucelabs.com/'
     checkout_1st_step_url = login_url + 'checkout-step-one.html'
+    checkout_2nd_step_url = login_url + 'checkout-step-two.html'
+    done_url = login_url + 'checkout-complete.html'
 
     def product_url(self, product_id: int) -> str:
         """Return product URL depending on it`s ID
@@ -31,6 +33,11 @@ class Constants:
     missing_username = 'Epic sadface: Username is required'
     missing_password = 'Epic sadface: Password is required'
     blocked_user = 'Epic sadface: Sorry, this user has been locked out.'
+
+    # Errors on Overview page
+    missing_first_name = 'Error: First Name is required'
+    missing_last_name = 'Error: Last Name is required'
+    missing_postal_code = 'Error: Postal Code is required'
 
 
 const = Constants()

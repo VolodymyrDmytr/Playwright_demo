@@ -10,9 +10,10 @@ class OverviewPage(BasePage):
         super().__init__(page)
         self.locators = OverviewLocators(self.page)
 
-    def check_cart_card(
+    def check_product_card(
             self,
             number: int,
+            amount: int,
             title: str,
             description: str,
             price: str,
@@ -31,10 +32,12 @@ class OverviewPage(BasePage):
         number -= 1
         locator = self.locators.card.nth(number)
 
+        amount_locator = self.locators.card_amount(locator)
         title_locator = self.locators.card_title(locator)
         description_locator = self.locators.card_description(locator)
         price_locator = self.locators.card_price(locator)
 
+        expect(amount_locator).to_have_text(str(amount))
         expect(title_locator).to_have_text(title)
         expect(description_locator).to_have_text(description)
         expect(price_locator).to_have_text(price)

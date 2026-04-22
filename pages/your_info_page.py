@@ -81,22 +81,31 @@ class YourInfoPage(BasePage):
         locator = self.locators.continue_button
         locator.click()
 
-    def check_error_icon_in_field(
+    def check_error_icons_in_fields(
             self,
-            data: str,
     ) -> bool:
-        """Check`s is error icon is visible in expected field on Your Info page
-
-        Args:
-            data (str): Options: First name / Last name / Postal code
+        """Check`s is error icon are visible in expected field
+        on Your Info page
 
         Returns:
-            bool: True, if error icon is visible
+            bool: True, if error icons are visible
         """
-        locator = self._locator_by_field_name(data)
+        for i in range(0, 3):
+            expect(
+                self.locators.error_icons_in_fields(i)).to_be_visible()
 
-        expect(
-            self.locators.error_icons_in_fields(locator)).to_be_visible()
+    def check_missing_error_icons_in_fields(
+            self,
+    ) -> bool:
+        """Check`s is error icons are invisible in expected field on Your Info
+        page
+
+        Returns:
+            bool: True, if error icons are invisible
+        """
+        for i in range(0, 3):
+            expect(
+                self.locators.error_icons_in_fields(i)).not_to_be_visible()
 
     def check_error_text(
             self,
@@ -118,6 +127,15 @@ class YourInfoPage(BasePage):
         """
         locator = self.locators.close_error_message_button
         locator.click()
+
+    def check_is_error_block_absent(self) -> bool:
+        """Checks is error massege block is invisible on Your Info page
+
+        Returns:
+            bool: True, if block is invisible
+        """
+        locator = self.locators.close_error_message_button
+        expect(locator).not_to_be_visible()
 
     def check_data_in_field(
             self,
