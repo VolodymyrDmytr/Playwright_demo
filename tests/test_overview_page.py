@@ -2,14 +2,13 @@ import pytest
 
 from config.constants import const
 from config.parameters import param
-# from config.faker_settings import faker
 
 
 @pytest.mark.ui
 @pytest.mark.ui_overview_page
 def test_back_button(overview, open_overview_page):
     overview.click_cancel_button()
-    overview.check_url(const.checkout_1st_step_url)
+    overview.check_url(const.catalog_url)
 
 
 @pytest.mark.ui

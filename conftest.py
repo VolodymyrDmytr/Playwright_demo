@@ -95,8 +95,6 @@ def open_login_page(page: Page):
 def open_catalog_page(page: Page, open_login_page):
     user = LoginPage(page)
 
-    # user.go_to_page(const.login_url)
-
     user.fill_username_field(param.standart_user[0])
     user.fill_password_field(param.standart_user[1])
 
@@ -109,16 +107,8 @@ def open_catalog_page(page: Page, open_login_page):
 
 @pytest.fixture()
 def open_cart_page_with_products(page: Page, open_catalog_page):
-    # login = LoginPage(page)
     catalog = CatalogPage(page)
     header = Header(page)
-
-    # login.go_to_page(const.login_url)
-
-    # login.fill_username_field(param.standart_user[0])
-    # login.fill_password_field(param.standart_user[1])
-
-    # login.press_login_button()
 
     for i in range(6):
         catalog.click_card_button(i)
@@ -151,4 +141,11 @@ def open_overview_page(page: Page, open_your_info_page):
 
     info.check_url(const.checkout_2nd_step_url)
 
+    yield
+
+
+@pytest.fixture()
+def open_done_page(page: Page, open_overview_page):
+    overview = OverviewPage(page)
+    overview.click_finish_button()
     yield

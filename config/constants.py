@@ -39,5 +39,11 @@ class Constants:
     missing_last_name = 'Error: Last Name is required'
     missing_postal_code = 'Error: Postal Code is required'
 
+    # Done page text
+    done_title = 'Thank you for your order!'
+    done_text = ('Your order has been dispatched, and will arrive just as '
+                 + 'fast as the pony can get there!')
+    done_alt_image = 'Pony Express'
+
 
 const = Constants()

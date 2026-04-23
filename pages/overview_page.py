@@ -2,6 +2,9 @@ from pages.base_page import BasePage
 
 from playwright.sync_api import expect, Page
 from config.locators import OverviewLocators
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class OverviewPage(BasePage):
@@ -29,7 +32,6 @@ class OverviewPage(BasePage):
         Returns:
             bool: True, if data matches expectations
         """
-        number -= 1
         locator = self.locators.card.nth(number)
 
         amount_locator = self.locators.card_amount(locator)
@@ -50,29 +52,32 @@ class OverviewPage(BasePage):
         """
         # Getting actual prices
         tax_locator = self.locators.tax
-        taxes = tax_locator.text_content().replace('Tax $', '')
-        taxes = int(taxes)
+        taxes = tax_locator.text_content().replace('Tax: $', '')
+        taxes = float(taxes)
 
         item_total_locator = self.locators.items_total
         item_total = item_total_locator.text_content().replace(
             'Item total: $', '')
-        item_total = int(item_total)
+        item_total = float(item_total)
 
         total_price_locator = self.locators.total_price
         total_price = total_price_locator.text_content().replace(
             'Total: $', '')
-        total_price = int(total_price)
+        total_price = float(total_price)
 
         # Calculating actual price
         expected_item_price = 0
         cards_locators = self.locators.card
-        for i in range(len(cards_locators) - 1):
+        for i in range(cards_locators.count()):
             locator = cards_locators.nth(i)
             item_price = self.locators.card_price(locator).text_content(
             ).replace(
                 '$', '')
-            item_price = int(item_price)
+            item_price = float(item_price)
+            logger.debug('%s item price: %s', i, item_price)
             expected_item_price += item_price
+            logger.debug('Current total price (%s): %s',
+                         i, expected_item_price)
 
         # Calculating taxes
         expected_taxes = expected_item_price * 0.08
@@ -81,9 +86,16 @@ class OverviewPage(BasePage):
         expected_total_sum = expected_item_price + expected_taxes
 
         # Checking results
-        assert taxes == expected_taxes
-        assert item_total == expected_item_price
-        assert total_price == expected_total_sum
+        logger.debug('Taxes: actual = %s, expected = %s',
+                     taxes, expected_taxes)
+        logger.debug('Total price: actual = %s, expected = %s',
+                     total_price, expected_total_sum)
+        logger.debug('Item total: actual = %s, expected = %s',
+                     item_total, expected_item_price)
+
+        assert taxes == round(expected_taxes, 2)
+        assert item_total == round(expected_item_price, 2)
+        assert total_price == round(expected_total_sum, 2)
 
     def click_cancel_button(self) -> None:
         """Click`s "Cancel" button on Overview page

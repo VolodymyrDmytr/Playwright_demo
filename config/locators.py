@@ -369,7 +369,7 @@ class DoneLocators(UniversalLocators):
         Returns:
             Locator: Image`s locator
         """
-        return self.page.locator('pony_express')
+        return self.page.locator('.pony_express')
 
     @property
     def page_title(self) -> Locator:
@@ -408,7 +408,7 @@ class OverviewLocators(UniversalLocators):
         Returns:
             Locator: Button`s locator
         """
-        return self.page.locator('.checkout_button')
+        return self.page.locator('.btn_action')
 
     @property
     def items_total(self) -> Locator:
@@ -665,4 +665,5 @@ class YourInfoLocators(UniversalLocators):
         Returns:
             Locator: Icon`s locator
         """
-        return self.page.locator('.form_group').nth(data).locator('.error_icon')
+        return self.page.locator('.form_group').nth(data).locator(
+            '.error_icon')
