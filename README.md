@@ -25,3 +25,6 @@ tests\test_product_page.py F                                             [ 95%]
 tests\test_catalog_page.py .                                             [ 97%]
 tests\test_product_page.py F                                             [100%]
 -----> 7 Fails
+
+
+Add Poetry
