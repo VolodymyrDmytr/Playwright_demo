@@ -547,7 +547,7 @@ class ProductLocators(UniversalLocators):
         Returns:
             locator
         """
-        return self.page.locator('.inventory_details_desc')
+        return self.page.locator('.inventory_details_name')
 
     @property
     def description(self) -> Locator:
@@ -556,7 +556,7 @@ class ProductLocators(UniversalLocators):
         Returns:
             locator
         """
-        return self.page.locator('.inventory_details_name')
+        return self.page.locator('.inventory_details_desc')
 
     @property
     def price(self) -> Locator:
@@ -568,14 +568,24 @@ class ProductLocators(UniversalLocators):
         return self.page.locator('.inventory_details_price')
 
     @property
-    def button(self) -> Locator:
-        """Add to card / Remove button on product`s page
-        Depends on it`s current state. Because locator is for both
+    def add_button(self) -> Locator:
+        """Add to card button on product`s page
+        Locator only for Add to card button
 
         Returns:
-            locator
+            Locator: locator
         """
         return self.page.locator('.btn_primary')
+
+    @property
+    def remove_button(self) -> Locator:
+        """Remove button on product`s page
+        Locator only for Add to card button
+
+        Returns:
+            Locator: locator
+        """
+        return self.page.locator('.btn_inventory')
 
     @property
     def back_button(self) -> Locator:
@@ -597,7 +607,7 @@ class YourInfoLocators(UniversalLocators):
         Returns:
             Locator: Field`s locator
         """
-        return self.page.get_by_placeholder("First Name")
+        return self.page.get_by_placeholder('First Name')
 
     @property
     def last_name_field(self) -> Locator:

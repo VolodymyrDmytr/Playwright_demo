@@ -1,9 +1,9 @@
 from playwright.sync_api import expect, Page
+import allure
+import logging
 
 from pages.base_page import BasePage
 from config.locators import CatalogLocators
-
-import logging
 
 logger = logging.getLogger('Catalog page')
 
@@ -14,6 +14,10 @@ class CatalogPage(BasePage):
         super().__init__(page)
         self.locators = CatalogLocators(self.page)
 
+    @allure.step("""Expected card {number} to have data:
+                Title: {title}
+                Description: {description}
+                Price: {price}""")
     def check_product_card(
             self,
             number: int,
@@ -53,6 +57,7 @@ class CatalogPage(BasePage):
         expect(price_locator).to_have_text(price)
         expect(image_locator).to_have_attribute('alt', title)
 
+    @allure.step('Click Add To Card button for card #{data}')
     def click_card_button(
             self,
             data: int,
@@ -67,6 +72,7 @@ class CatalogPage(BasePage):
         locators = self.locators.product_card.nth(data)
         self.locators.product_button(locators).click()
 
+    @allure.step('Select {data} sort')
     def choose_sort(
             self,
             data: str,

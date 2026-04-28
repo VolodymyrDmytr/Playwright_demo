@@ -1,5 +1,6 @@
 from playwright.sync_api import expect, Page
 import logging
+import allure
 
 from pages.base_page import BasePage
 from config.locators import CartLocators
@@ -13,6 +14,11 @@ class CartPage(BasePage):
         super().__init__(page)
         self.locators = CartLocators(self.page)
 
+    @allure.step("""Expected card {number} data:
+                 Product amount: {amount}
+                 Title: {title}
+                 Description: {description}
+                 Price: {price}""")
     def check_cart_card(
             self,
             number: int,
@@ -56,6 +62,7 @@ class CartPage(BasePage):
         expect(description_locator).to_have_text(description)
         expect(price_locator).to_have_text(price)
 
+    @allure.step('Check that there are no cards on page')
     def check_no_cards(self) -> bool:
         """Checks cards if cards are present on the Cart page
 
@@ -65,6 +72,7 @@ class CartPage(BasePage):
         locator = self.locators.card
         expect(locator).not_to_be_visible()
 
+    @allure.step('Pressing remove button for card #{number}')
     def click_remove_button(
             self,
             number: int,
@@ -92,12 +100,14 @@ class CartPage(BasePage):
     #     locator = self.card.nth(number)
     #     self.card_amount(locator).fill(data)
 
+    @allure.step('Click Continue Shopping button')
     def click_continue_shopping_button(self) -> None:
         """Clicks "Continue shopping" button on Card page
         """
         locator = self.locators.continue_shopping_button
         locator.click()
 
+    @allure.step('Click Checkout button')
     def click_checkout_button(self) -> None:
         """Clicks "Checkout" button on Card page
         """

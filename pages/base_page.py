@@ -1,4 +1,6 @@
 from playwright.sync_api import Page, expect
+import allure
+
 from config.constants import const
 from config.locators import UniversalLocators
 
@@ -9,6 +11,7 @@ class BasePage:
         self.page = page
         self.locators = UniversalLocators(self.page)
 
+    @allure.step("Open url: {url}")
     def go_to_page(
             self,
             url: str,
@@ -20,6 +23,7 @@ class BasePage:
         """
         self.page.goto(url)
 
+    @allure.step("Expected page title: {const.page_title}")
     def check_page_title(self) -> bool:
         """Check and return is page has required title
         Required title (in config/constants.py): page_title
@@ -29,6 +33,7 @@ class BasePage:
         """
         expect(self.page).to_have_title(const.page_title)
 
+    @allure.step("Expeced page url: {url}")
     def check_url(
             self,
             url: str,
@@ -43,6 +48,7 @@ class BasePage:
         """
         expect(self.page).to_have_url(url)
 
+    @allure.step("Click on product link: {data}")
     def click_on_product(
             self,
             data: str,
@@ -55,5 +61,6 @@ class BasePage:
         locator = self.locators.locator_by_text(data)
         locator.click()
 
+    @allure.step("Press system 'Back' button")
     def sys_back(self) -> None:
         self.page.go_back()

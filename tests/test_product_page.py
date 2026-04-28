@@ -12,7 +12,7 @@ from config.parameters import param
      param.products[3], param.products[4], param.products[5],
      ],
 )
-def test_product_data(product, catalog, product_data, open_catalog_page):
+def test_product_data(product, product_data, open_catalog_page):
     product.click_on_product(product_data['title'])
 
     product.check_product_title(product_data['title'])
@@ -41,7 +41,7 @@ def test_add_to_cart(product, header, cart, open_catalog_page):
     product.click_on_product(product_data['title'])
     product.check_url(const.product_url(product_data['id']))
 
-    product.click_status_button()
+    product.click_add_to_card_button()
 
     header.check_products_amount_in_the_cart(1)
     header.click_cart_icon()
@@ -53,7 +53,7 @@ def test_add_to_cart(product, header, cart, open_catalog_page):
         product_data['description'],
         product_data['price'],
     )
-    cart.click_on_product(product_data['title'])
+    cart.sys_back()
 
-    product.click_status_button()
+    product.click_remove_button()
     header.check_products_amount_in_the_cart_is_not_visible()

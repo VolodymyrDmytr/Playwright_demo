@@ -1,7 +1,8 @@
 from pages.base_page import BasePage
+from config.locators import DoneLocators
 
 from playwright.sync_api import expect, Page
-from config.locators import DoneLocators
+import allure
 
 
 class DonePage(BasePage):
@@ -11,7 +12,7 @@ class DonePage(BasePage):
         self.locators = DoneLocators(self.page)
 
     # Actions
-
+    @allure.step('Click Back To Home button')
     def click_back_to_home_button(self) -> None:
         """Click`s on "Back Home" button on Done page
         """
@@ -19,7 +20,7 @@ class DonePage(BasePage):
         locator.click()
 
     # Checks
-
+    @allure.step('Check title on page. Expected: {data}')
     def check_title(
             self,
             data: str,
@@ -35,6 +36,7 @@ class DonePage(BasePage):
         locator = self.locators.page_title
         expect(locator).to_have_text(data)
 
+    @allure.step('Check text on page. Expected: {data}')
     def check_text(
             self,
             data: str,
@@ -50,6 +52,7 @@ class DonePage(BasePage):
         locator = self.locators.page_text
         expect(locator).to_have_text(data)
 
+    @allure.step('Check image on page (Its alt text). Expected: {data}')
     def check_image(
             self,
             data: str,

@@ -1,4 +1,5 @@
 from playwright.sync_api import expect, Page
+import allure
 
 from pages.base_page import BasePage
 from config.locators import LoginLocators
@@ -10,6 +11,7 @@ class LoginPage(BasePage):
         super().__init__(page)
         self.locators = LoginLocators(self.page)
 
+    @allure.step('Filling username field: {data}')
     def fill_username_field(
             self,
             data: str,
@@ -22,6 +24,7 @@ class LoginPage(BasePage):
         locator = self.locators.username_field
         locator.fill(data)
 
+    @allure.step('Filling password field: {data}')
     def fill_password_field(
             self,
             data: str,
@@ -34,12 +37,14 @@ class LoginPage(BasePage):
         locator = self.locators.password_field
         locator.fill(data)
 
+    @allure.step('Click Login button')
     def press_login_button(self) -> None:
         """Clicks Login button on Login page
         """
         locator = self.locators.login_button
         locator.click()
 
+    @allure.step('Checks is error container is visible')
     def check_that_error_container_is_not_visible(self) -> bool:
         """Checks is error container is not visible on Login page
         * Don`t require asset
@@ -51,6 +56,7 @@ class LoginPage(BasePage):
         locator = self.locators.error_message
         expect(locator).to_be_empty()
 
+    @allure.step('Checks is error text as expected. Expected: {data}')
     def check_is_error_message_expected(
             self,
             data: str,
@@ -66,12 +72,14 @@ class LoginPage(BasePage):
         locator = self.locators.error_message
         expect(locator).to_have_text(data)
 
+    @allure.step('Close error block')
     def close_error_text_block(self) -> None:
         """Closing error block with text on Login page
         """
         locator = self.locators.close_error_button
         locator.click()
 
+    @allure.step('Checks that fields contain errors')
     def check_errors_in_fields(
             self,
             data: int,
@@ -93,6 +101,7 @@ class LoginPage(BasePage):
         locator = self.locators.error_in_field
         assert locator.count() == data
 
+    @allure.step('Checks that fields don`t contain errors')
     def check_errors_are_not_visible(self) -> bool:
         """Checks that errors in fields are not visible
 

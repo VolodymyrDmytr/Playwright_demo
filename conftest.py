@@ -9,10 +9,10 @@ from pages.your_info_page import YourInfoPage
 
 from playwright.sync_api import Page
 import pytest
-
 import logging
-from config.logger_config import setup_logging
+import allure
 
+from config.logger_config import setup_logging
 from config.constants import const
 from config.parameters import param
 from config.faker_settings import faker
@@ -149,3 +149,17 @@ def open_done_page(page: Page, open_overview_page):
     overview = OverviewPage(page)
     overview.click_finish_button()
     yield
+
+
+# Allure fixture
+@pytest.fixture(autouse=True)
+def screenshot_on_failure(page: Page, request):
+    yield
+
+    if request.node.rep_call.failed:
+        screenshot = page.screenshot(full_page=True)
+        allure.attach(
+            screenshot,
+            name='failure_screenshot',
+            attachment_type=allure.attachment_type.PNG
+        )

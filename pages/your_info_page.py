@@ -1,7 +1,8 @@
 from pages.base_page import BasePage
+from config.locators import YourInfoLocators
 
 from playwright.sync_api import expect, Locator, Page
-from config.locators import YourInfoLocators
+import allure
 
 
 class YourInfoPage(BasePage):
@@ -11,7 +12,6 @@ class YourInfoPage(BasePage):
         self.locators = YourInfoLocators(self.page)
 
     # Helping methods
-
     def _locator_by_field_name(
             self,
             data: str,
@@ -33,6 +33,7 @@ class YourInfoPage(BasePage):
 
     # Actions
 
+    @allure.step('Filling First name field: {data}')
     def fill_first_name_field(
             self,
             data: str,
@@ -45,6 +46,7 @@ class YourInfoPage(BasePage):
         locator = self.locators.first_name_field
         locator.fill(data)
 
+    @allure.step('Filling Last name field: {data}')
     def fill_last_name_field(
             self,
             data: str,
@@ -57,6 +59,7 @@ class YourInfoPage(BasePage):
         locator = self.locators.last_name_field
         locator.fill(data)
 
+    @allure.step('Filling Postal code field: {data}')
     def fill_postal_code_field(
             self,
             data: str,
@@ -69,18 +72,21 @@ class YourInfoPage(BasePage):
         locator = self.locators.postal_code_field
         locator.fill(data)
 
+    @allure.step('Click Cancel button')
     def press_cancel_button(self) -> None:
         """Pressing 'Cancel' button on Your Info page
         """
         locator = self.locators.cancel_button
         locator.click()
 
+    @allure.step('Click Continue button')
     def press_continue_button(self) -> None:
         """Pressing 'Continue' button on Your Info page
         """
         locator = self.locators.continue_button
         locator.click()
 
+    @allure.step('Check are fields contain errors')
     def check_error_icons_in_fields(
             self,
     ) -> bool:
@@ -94,6 +100,7 @@ class YourInfoPage(BasePage):
             expect(
                 self.locators.error_icons_in_fields(i)).to_be_visible()
 
+    @allure.step('Check are fields do not contain errors')
     def check_missing_error_icons_in_fields(
             self,
     ) -> bool:
@@ -107,6 +114,7 @@ class YourInfoPage(BasePage):
             expect(
                 self.locators.error_icons_in_fields(i)).not_to_be_visible()
 
+    @allure.step('Checks is error text as expected. Expected: {data}')
     def check_error_text(
             self,
             data: str,
@@ -122,12 +130,14 @@ class YourInfoPage(BasePage):
         locator = self.locators.error_massege
         expect(locator).to_have_text(data)
 
+    @allure.step('Closing error block')
     def close_error_block(self) -> None:
         """Closing error massege block on Your Info page
         """
         locator = self.locators.close_error_message_button
         locator.click()
 
+    @allure.step('Checks is error block is closed')
     def check_is_error_block_absent(self) -> bool:
         """Checks is error massege block is invisible on Your Info page
 
@@ -137,6 +147,7 @@ class YourInfoPage(BasePage):
         locator = self.locators.close_error_message_button
         expect(locator).not_to_be_visible()
 
+    @allure.step('Checks is {field_name} contains {data}')
     def check_data_in_field(
             self,
             field_name: str,

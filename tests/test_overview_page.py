@@ -27,7 +27,7 @@ def test_check_products(overview, open_overview_page):
             1,
             param.products[i]['title'],
             param.products[i]['description'],
-            param.products[i]['price']
+            param.products[i]['price'],
         )
 
 

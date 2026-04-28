@@ -3,28 +3,27 @@
 Auto tests for Swag Labs (https://saucedemo.com)
 
 
-Last resullts
-tests\test_cart_page.py ......                                           [ 12%]
-tests\test_catalog_page.py ....                                          [ 20%]
-tests\test_done_page.py ..                                               [ 25%]
-tests\test_header.py ......                                              [ 37%]
-tests\test_login_page.py ....                                            [ 45%]
-tests\test_overview_page.py .....                                        [ 56%]
-tests\test_product_page.py F.F                                           [ 62%]
-tests\test_your_info_page.py ...                                         [ 68%]
-tests\test_catalog_page.py ..                                            [ 72%]
-tests\test_login_page.py .                                               [ 75%]
-tests\test_product_page.py F                                             [ 77%]
-tests\test_catalog_page.py ..                                            [ 81%]
-tests\test_login_page.py .                                               [ 83%]
-tests\test_product_page.py F                                             [ 85%]
-tests\test_catalog_page.py ..                                            [ 89%]
-tests\test_product_page.py F                                             [ 91%]
-tests\test_catalog_page.py .                                             [ 93%]
-tests\test_product_page.py F                                             [ 95%]
-tests\test_catalog_page.py .                                             [ 97%]
-tests\test_product_page.py F                                             [100%]
------> 7 Fails
-
-
 Add Poetry
+Add Results
+ - Add allure titles for tests
+
+Allure instalation is required to look at reports
+
+(First run) To run all tests with reports
+> pytest --alluredir=reports/allure_report
+
+Run all tests slow
+> pytest --headed --slowmo=<sec>
+
+Show reports
+> allure serve reports/allure_report
+
+Clear reports
+> rm -rf reports/allure_report
+
+Open venv
+> source venv/Scripts/activate
+
+Close venv
+> deactivate
+
