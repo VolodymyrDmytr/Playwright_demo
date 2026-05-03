@@ -82,7 +82,7 @@ class ProductPage(BasePage):
         locator = self.locators.remove_button
         locator.click()
 
-    @allure('Click Back To Products button')
+    @allure.step('Click Back To Products button')
     def click_back_to_products_button(
             self,
     ) -> None:

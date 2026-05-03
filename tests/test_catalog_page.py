@@ -1,5 +1,6 @@
 import pytest
 import logging
+import allure
 
 from config.constants import const
 from config.parameters import param
@@ -11,6 +12,8 @@ logger = logging.getLogger('Test Catalog Page')
 @pytest.mark.ui
 @pytest.mark.ui_catalog_page
 def test_product_cards_data(catalog, open_catalog_page):
+    allure.dynamic.title('Check product data')
+
     for i in range(6):
         catalog.check_product_card(
             i,
@@ -23,6 +26,8 @@ def test_product_cards_data(catalog, open_catalog_page):
 @pytest.mark.ui
 @pytest.mark.ui_catalog_page
 def test_adding_products_in_the_cart(catalog, header, open_catalog_page):
+    allure.dynamic.title('Adding products to the cart')
+
     for i in range(6):
         catalog.click_card_button(i)
 
@@ -41,6 +46,8 @@ def test_adding_products_in_the_cart(catalog, header, open_catalog_page):
      ],
 )
 def test_go_to_the_product_pages(catalog, product, open_catalog_page):
+    allure.dynamic.title(f'Open {product} product page')
+
     catalog.click_on_product(product['title'])
     catalog.check_url(const.product_url(product['id']))
 
@@ -54,6 +61,8 @@ def test_go_to_the_product_pages(catalog, product, open_catalog_page):
      ],
 )
 def test_sorting(catalog, sort_type, open_catalog_page):
+    allure.dynamic.title(f'Check sorting: {sort_type}')
+
     logger.debug('Sort Type: %s', sort_type)
     catalog.choose_sort(sort_type)
     product_data = param.sort_products_dict(param.products, sort_type)

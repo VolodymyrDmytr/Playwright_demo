@@ -1,4 +1,5 @@
 import pytest
+import allure
 
 from config.constants import const
 from config.faker_settings import faker
@@ -7,6 +8,8 @@ from config.faker_settings import faker
 @pytest.mark.ui
 @pytest.mark.ui_your_info_page
 def test_filling_field(your_info, open_your_info_page):
+    allure.dynamic.title('Filling and submitting form')
+
     your_info.fill_first_name_field(faker.first_name())
     your_info.fill_last_name_field(faker.last_name())
     your_info.fill_postal_code_field(faker.postcode())
@@ -17,6 +20,8 @@ def test_filling_field(your_info, open_your_info_page):
 @pytest.mark.ui
 @pytest.mark.ui_your_info_page
 def test_cancel(your_info, open_your_info_page):
+    allure.dynamic.title('Click Cancel button')
+
     your_info.press_cancel_button()
     your_info.check_url(const.cart_url)
 
@@ -24,6 +29,8 @@ def test_cancel(your_info, open_your_info_page):
 @pytest.mark.ui
 @pytest.mark.ui_your_info_page
 def test_error_in_fields(your_info, open_your_info_page):
+    allure.dynamic.title('Check error text and error icons in fields')
+
     your_info.press_continue_button()
     your_info.check_url(const.checkout_1st_step_url)
 

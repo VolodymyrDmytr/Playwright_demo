@@ -1,4 +1,5 @@
 import pytest
+import allure
 
 from config.constants import const
 from config.parameters import param
@@ -13,6 +14,8 @@ from config.parameters import param
      ],
 )
 def test_product_data(product, product_data, open_catalog_page):
+    allure.dynamic.title(f"Check {product_data['title']}'s data")
+
     product.click_on_product(product_data['title'])
 
     product.check_product_title(product_data['title'])
@@ -24,6 +27,8 @@ def test_product_data(product, product_data, open_catalog_page):
 @pytest.mark.ui
 @pytest.mark.ui_product_page
 def test_back_to_catalog(product, open_catalog_page):
+    allure.dynamic.title('Click Back to products button')
+
     product_data = param.get_random_product()
 
     product.click_on_product(product_data['title'])
@@ -36,6 +41,8 @@ def test_back_to_catalog(product, open_catalog_page):
 @pytest.mark.ui
 @pytest.mark.ui_product_page
 def test_add_to_cart(product, header, cart, open_catalog_page):
+    allure.dynamic.title('Click Add to cart and Remove button')
+
     product_data = param.get_random_product()
 
     product.click_on_product(product_data['title'])
