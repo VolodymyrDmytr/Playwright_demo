@@ -19,6 +19,11 @@ on:
           - ui_done_page
           - url
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   run-tests:
     name: Run tests
