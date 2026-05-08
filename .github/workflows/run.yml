@@ -35,7 +35,72 @@ jobs:
       run: pip install -r requirements.txt
     - name: Install Browsers
       run: playwright install
-    - name: Run project
+    - name: Run All tests
       if: "github.event.inputs.deployment_target == 'All'"
-      run: poetry run pytest
-      
+      run: poetry run pytest --alluredir=allureresults
+      continue-on-error: true
+    - name: Run ui_login_page tests
+      if: "github.event.inputs.deployment_target == 'ui_login_page'"
+      run: poetry run pytest -m ui_login_page --alluredir=allureresults
+      continue-on-error: true
+    - name: Run ui_catalog_page tests
+      if: "github.event.inputs.deployment_target == 'ui_catalog_page'"
+      run: poetry run pytest -m ui_catalog_page --alluredir=allureresults
+      continue-on-error: true
+    - name: Run ui_product_page tests
+      if: "github.event.inputs.deployment_target == 'ui_product_page'"
+      run: poetry run pytest -m ui_product_page --alluredir=allureresults
+      continue-on-error: true
+    - name: Run ui_header tests
+      if: "github.event.inputs.deployment_target == 'ui_header'"
+      run: poetry run pytest -m ui_header --alluredir=allureresults
+      continue-on-error: true
+    - name: Run ui_cart_page tests
+      if: "github.event.inputs.deployment_target == 'ui_cart_page'"
+      run: poetry run pytest -m ui_cart_page --alluredir=allureresults
+      continue-on-error: true
+    - name: Run ui_your_info_page tests
+      if: "github.event.inputs.deployment_target == 'ui_your_info_page'"
+      run: poetry run pytest -m ui_your_info_page --alluredir=allureresults
+      continue-on-error: true
+    - name: Run ui_overview_page tests
+      if: "github.event.inputs.deployment_target == 'ui_overview_page'"
+      run: poetry run pytest -m ui_overview_page --alluredir=allureresults
+      continue-on-error: true
+    - name: Run ui_done_page tests
+      if: "github.event.inputs.deployment_target == 'ui_done_page'"
+      run: poetry run pytest -m ui_done_page --alluredir=allureresults
+      continue-on-error: true
+    - name: Run url tests
+      if: "github.event.inputs.deployment_target == 'url'"
+      run: poetry run pytest -m url --alluredir=allureresults
+      continue-on-error: true
+    - name: Store allure results
+      uses: actions/upload-artifact@v3
+      with:
+        name: allure-results
+        path: allure-results
+        retention-days: 1
+
+  publish-allure:
+    name: Generate and Publish allure report
+    on: ubuntu-latest
+    needs: run-tests
+
+    steps:
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'microsoft'
+          java-version: '17'
+      - name: Install allure 2.40.0
+        run: sudo wget https://github.com/allure-framework/allure2/releases/download/2.40.0/allure-2.40.0.tgz && sudo tar -zxvf allure-2.40.0.tgz -c /opt/ && sudo ln -s /opt/allure-2.40.0.tgz/bin/allure /usr/bin/allure
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+      - name: Generate allure report
+        run: allure generate -c allure-results -o _site
+      - name: Upload Pages artifacts
+        uses: actions/upload-pages-artifact@v2
+      - name: Deploy results
+        id: deployment
+        uses: actions/deploy-pages@v1.2.9

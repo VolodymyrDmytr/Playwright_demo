@@ -15,3 +15,7 @@ Show reports
 
 Clear reports
 > rm -rf reports/allure_report
+
+
+**ADD**
+ - URL tests
