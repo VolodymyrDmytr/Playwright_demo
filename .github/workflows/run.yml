@@ -100,7 +100,7 @@ jobs:
       - name: Generate allure report
         run: allure generate -c allure-results -o _site
       - name: Upload Pages artifacts
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v4
       - name: Deploy results
         id: deployment
-        uses: actions/deploy-pages@v1.2.9
+        uses: actions/deploy-pages@v4
