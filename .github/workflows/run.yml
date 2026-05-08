@@ -84,7 +84,7 @@ jobs:
 
   publish-allure:
     name: Generate and Publish allure report
-    on: ubuntu-latest
+    runs-on: ubuntu-latest
     needs: run-tests
 
     steps:
