@@ -25,14 +25,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Install project
+      uses: actions/checkout@v3
     - name: Install Python
       uses: actions/setup-python@v4
       with:
         python-version: "3.14"
     - name: Install requirements
       run: pip install -r requirements.txt
-    - name: Install project
-      uses: actions/checkout@v3
     - name: Run project
       if: "github.event.inputs.deployment_target == 'All'"
       run: poetry run pytest
