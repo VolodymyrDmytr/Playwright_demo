@@ -22,7 +22,7 @@ on:
 jobs:
   run-tests:
     name: Run tests
-    runs-on: linux-latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: Install python
