@@ -19,6 +19,11 @@ on:
           - ui_done_page
           - url
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   run-tests:
     name: Run tests
@@ -86,7 +91,9 @@ jobs:
     name: Generate and Publish allure report
     runs-on: ubuntu-latest
     needs: run-tests
-
+    environment:
+      name: github-pages
+  
     steps:
       - name: Install Java
         uses: actions/setup-java@v3
@@ -100,7 +107,7 @@ jobs:
       - name: Generate allure report
         run: allure generate -c allure-results -o _site
       - name: Upload Pages artifacts
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v4
       - name: Deploy results
         id: deployment
-        uses: actions/deploy-pages@v1.2.9
+        uses: actions/deploy-pages@v4
