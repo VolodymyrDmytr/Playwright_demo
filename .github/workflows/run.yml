@@ -105,7 +105,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
       - name: Generate allure report
-        run: allure generate -c allure-results -o _site
+        run: allure generate -C allure-results -o _site
       - name: Upload Pages artifacts
         uses: actions/upload-pages-artifact@v4
       - name: Deploy results
