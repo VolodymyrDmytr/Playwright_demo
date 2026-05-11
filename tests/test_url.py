@@ -24,7 +24,7 @@ def test_login_page(login):
     (const.product_url(param.get_random_product()['id']), const.product_path),
 ])
 def test_access_to_pages(login, url, path):
-    allure.dynamic.title('Try to go on {path} page, without login')
+    allure.dynamic.title(f'Try to go on {path} page, without login')
     login.go_to_page(url)
     login.check_url(const.login_url)
 

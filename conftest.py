@@ -161,5 +161,5 @@ def screenshot_on_failure(page: Page, request):
         allure.attach(
             screenshot,
             name='failure_screenshot',
-            attachment_type=allure.attachment_type.PNG
+            attachment_type=allure.attachment_type.PNG,
         )
