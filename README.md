@@ -18,4 +18,4 @@ Clear reports
 
 
 **ADD**
- - URL tests
+ - History of runs
