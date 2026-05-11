@@ -42,43 +42,43 @@ jobs:
       run: playwright install
     - name: Run All tests
       if: "github.event.inputs.deployment_target == 'All'"
-      run: poetry run pytest --alluredir=allureresults
+      run: poetry run pytest --alluredir=allure-results
       continue-on-error: true
     - name: Run ui_login_page tests
       if: "github.event.inputs.deployment_target == 'ui_login_page'"
-      run: poetry run pytest -m ui_login_page --alluredir=allureresults
+      run: poetry run pytest -m ui_login_page --alluredir=allure-results
       continue-on-error: true
     - name: Run ui_catalog_page tests
       if: "github.event.inputs.deployment_target == 'ui_catalog_page'"
-      run: poetry run pytest -m ui_catalog_page --alluredir=allureresults
+      run: poetry run pytest -m ui_catalog_page --alluredir=allure-results
       continue-on-error: true
     - name: Run ui_product_page tests
       if: "github.event.inputs.deployment_target == 'ui_product_page'"
-      run: poetry run pytest -m ui_product_page --alluredir=allureresults
+      run: poetry run pytest -m ui_product_page --alluredir=allure-results
       continue-on-error: true
     - name: Run ui_header tests
       if: "github.event.inputs.deployment_target == 'ui_header'"
-      run: poetry run pytest -m ui_header --alluredir=allureresults
+      run: poetry run pytest -m ui_header --alluredir=allure-results
       continue-on-error: true
     - name: Run ui_cart_page tests
       if: "github.event.inputs.deployment_target == 'ui_cart_page'"
-      run: poetry run pytest -m ui_cart_page --alluredir=allureresults
+      run: poetry run pytest -m ui_cart_page --alluredir=allure-results
       continue-on-error: true
     - name: Run ui_your_info_page tests
       if: "github.event.inputs.deployment_target == 'ui_your_info_page'"
-      run: poetry run pytest -m ui_your_info_page --alluredir=allureresults
+      run: poetry run pytest -m ui_your_info_page --alluredir=allure-results
       continue-on-error: true
     - name: Run ui_overview_page tests
       if: "github.event.inputs.deployment_target == 'ui_overview_page'"
-      run: poetry run pytest -m ui_overview_page --alluredir=allureresults
+      run: poetry run pytest -m ui_overview_page --alluredir=allure-results
       continue-on-error: true
     - name: Run ui_done_page tests
       if: "github.event.inputs.deployment_target == 'ui_done_page'"
-      run: poetry run pytest -m ui_done_page --alluredir=allureresults
+      run: poetry run pytest -m ui_done_page --alluredir=allure-results
       continue-on-error: true
     - name: Run url tests
       if: "github.event.inputs.deployment_target == 'url'"
-      run: poetry run pytest -m url --alluredir=allureresults
+      run: poetry run pytest -m url --alluredir=allure-results
       continue-on-error: true
     - name: Store allure results
       uses: actions/upload-artifact@v4
