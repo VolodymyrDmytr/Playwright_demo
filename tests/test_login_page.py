@@ -50,8 +50,8 @@ def test_unsuccess_login(login, open_login_page):
     ],
 )
 def test_missing_data(login, open_login_page, username, password, error_text):
-    allure.dynamic.title(f'''Login with missing data.
-                         Username = {username}, Password = {password}''')
+    allure.dynamic.title(f"""Login with missing data.
+                         Username = {username}, Password = {password}""")
 
     login.fill_username_field(username)
     login.fill_password_field(password)

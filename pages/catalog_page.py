@@ -49,7 +49,7 @@ class CatalogPage(BasePage):
             Expected: %s, %s, %s
             """,
             title_locator.text_content(), description_locator.text_content(),
-            price_locator.text_content(), title, description, price
+            price_locator.text_content(), title, description, price,
         )
 
         expect(title_locator).to_have_text(title)

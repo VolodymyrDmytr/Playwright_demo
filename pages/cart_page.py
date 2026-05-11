@@ -54,7 +54,7 @@ class CartPage(BasePage):
             number, title_locator.text_content(),
             amount_locator.text_content(), description_locator.text_content(),
             price_locator.text_content(),
-            number, title, amount, description, price
+            number, title, amount, description, price,
         )
 
         expect(title_locator).to_have_text(title)

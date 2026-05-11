@@ -1,14 +1,22 @@
 class Constants:
     page_title = 'Swag Labs'
 
+    # Paths
+    catalog_path = 'inventory.html'
+    cart_path = 'cart.html'
+    checkout_1st_step_url_path = 'checkout-step-one.html'
+    checkout_2nd_step_url_path = 'checkout-step-two.html'
+    done_path = 'checkout-complete.html'
+    product_path = 'inventory-item.html'
+
     # URL`s
     login_url = 'https://www.saucedemo.com/'
-    catalog_url = login_url + 'inventory.html'
-    cart_url = login_url + 'cart.html'
+    catalog_url = login_url + catalog_path
+    cart_url = login_url + cart_path
+    checkout_1st_step_url = login_url + checkout_1st_step_url_path
+    checkout_2nd_step_url = login_url + checkout_2nd_step_url_path
+    done_url = login_url + done_path
     about_url = 'https://saucelabs.com/'
-    checkout_1st_step_url = login_url + 'checkout-step-one.html'
-    checkout_2nd_step_url = login_url + 'checkout-step-two.html'
-    done_url = login_url + 'checkout-complete.html'
 
     def product_url(self, product_id: int) -> str:
         """Return product URL depending on it`s ID
@@ -19,7 +27,7 @@ class Constants:
         Returns:
             str: Product`s URL
         """
-        return self.login_url + f'inventory-item.html?id={product_id}'
+        return self.login_url + self.product_path + f'?id={product_id}'
 
     # Sort on catalog page
     sort_type_a_z = 'az'
@@ -33,6 +41,20 @@ class Constants:
     missing_username = 'Epic sadface: Username is required'
     missing_password = 'Epic sadface: Password is required'
     blocked_user = 'Epic sadface: Sorry, this user has been locked out.'
+
+    def access_error_message(self, data: str) -> str:
+        """Creates expected error message in Error block on Login page
+        *After trying to go on the page without login
+
+        Args:
+            data (str): Page URL
+
+        Returns:
+            str: Message in error block
+        """
+        message = f"Epic sadface: You can only access '/{data}'"
+        message += ' when you are logged in.'
+        return message
 
     # Errors on Overview page
     missing_first_name = 'Error: First Name is required'

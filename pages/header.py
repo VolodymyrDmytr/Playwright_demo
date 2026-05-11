@@ -59,14 +59,14 @@ class Header(BasePage):
         locator = self.locators.reset_app_state_option_nav
         locator.click()
 
-    @allure.step("Click Cart icon in Header")
+    @allure.step('Click Cart icon in Header')
     def click_cart_icon(self) -> None:
         """Clicks on the cart icon
         """
         locator = self.locators.cart_icon
         locator.click()
 
-    @allure.step("Check that product amount in cart is {data} in Header")
+    @allure.step('Check that product amount in cart is {data} in Header')
     def check_products_amount_in_the_cart(
             self,
             data: int,
