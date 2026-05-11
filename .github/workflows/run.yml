@@ -94,7 +94,7 @@ jobs:
           distribution: 'microsoft'
           java-version: '17'
       - name: Install allure 2.40.0
-        run: sudo wget https://github.com/allure-framework/allure2/releases/download/2.40.0/allure-2.40.0.tgz && sudo tar -zxvf allure-2.40.0.tgz -c /opt/ && sudo ln -s /opt/allure-2.40.0.tgz/bin/allure /usr/bin/allure
+        run: sudo wget https://github.com/allure-framework/allure2/releases/download/2.40.0/allure-2.40.0.tgz && sudo tar -zxvf allure-2.40.0.tgz -C /opt/ && sudo ln -s /opt/allure-2.40.0.tgz/bin/allure /usr/bin/allure
       - name: Download artifacts
         uses: actions/download-artifact@v4
       - name: Generate allure report
