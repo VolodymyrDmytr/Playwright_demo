@@ -25,9 +25,61 @@ permissions:
   id-token: write
 
 jobs:
+  download-artifacts:
+    name: Downloading runs history
+    runs-on: ubuntu-latest
+
+    steps:
+     - name: Install Python
+       uses: actions/setup-python@v4
+       with:
+        python-version: "3.14"
+     - name: Download history
+       runs: > 
+        $ARTIFACT_ID=$(curl -L 
+        -H "Accept: application/vnd.github+json"
+        -H "X-GitHub-Api-Version: 2026-05-12"
+        "https://github.com/repo/VolodymyrDmytr/Playwright_demo/actions/artifacts?name=allure-results"
+        |
+        python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id'])" 
+        &&
+        curl -L
+        -H "Accept: application/vnd.github+json"
+        -H "Authorization: Bearer ${{ secrets.TOKEN }}"
+        -H "X-GitHub-Api-Version: 2026-05-12"
+        "https://github.com/repo/VolodymyrDmytr/Playwright_demo/actions/artifacts/$ARTIFACT_ID/zip"
+        -o artifacts.zip
+        &&
+        $REPORT_ID=$(curl -L 
+        -H "Accept: application/vnd.github+json"
+        -H "X-GitHub-Api-Version: 2026-05-12"
+        "https://github.com/repo/VolodymyrDmytr/Playwright_demo/actions/artifacts?name=github-pages"
+        |
+        python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id'])") 
+        &&
+        curl -L
+        -H "Accept: application/vnd.github+json"
+        -H "Authorization: Bearer ${{ secrets.TOKEN }}"
+        -H "X-GitHub-Api-Version: 2026-05-12"
+        "https://github.com/repo/VolodymyrDmytr/Playwright_demo/actions/artifacts/$REPORT_ID/zip"
+        -o old_pages.zip
+     - name: Unpack results
+       runs: mkdir allure-results && unzip artifacts.zip -d allure-results
+     - name: Unpack old pages
+       runs: mkdir old_pages pages_history && unzip old_pages.zip -d old_pages && tar -xvf old_pages/artifact.tar -C pages_history
+       runs: cp pages_history/history/* allure-results && cp -r pages_history/history allure-results
+     - name: Store history
+       uses: actions/upload-artifact@v4
+       with:
+        name: allure-results
+        path: allure-results
+       retention-days: 1
+    
+
   run-tests:
     name: Run tests
     runs-on: ubuntu-latest
+    needs: download-artifacts
 
     steps:
     - name: Install project
