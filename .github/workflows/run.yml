@@ -25,62 +25,9 @@ permissions:
   id-token: write
 
 jobs:
-  download-artifacts:
-    name: Downloading runs history
-    runs-on: ubuntu-latest
-
-    steps:
-     - name: Install Python
-       uses: actions/setup-python@v4
-       with:
-        python-version: "3.14"
-     - name: Download history
-       run: > 
-        $ARTIFACT_ID=$(curl -L 
-        -H "Accept: application/vnd.github+json"
-        -H "X-GitHub-Api-Version: 2026-05-12"
-        "https://github.com/repo/VolodymyrDmytr/Playwright_demo/actions/artifacts?name=allure-results"
-        |
-        python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id'])")
-        &&
-        curl -L
-        -H "Accept: application/vnd.github+json"
-        -H "Authorization: Bearer ${{ secrets.TOKEN }}"
-        -H "X-GitHub-Api-Version: 2026-05-12"
-        "https://github.com/repo/VolodymyrDmytr/Playwright_demo/actions/artifacts/$ARTIFACT_ID/zip"
-        -o artifacts.zip
-        &&
-        $REPORT_ID=$(curl -L 
-        -H "Accept: application/vnd.github+json"
-        -H "X-GitHub-Api-Version: 2026-05-12"
-        "https://github.com/repo/VolodymyrDmytr/Playwright_demo/actions/artifacts?name=github-pages"
-        |
-        python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id'])") 
-        &&
-        curl -L
-        -H "Accept: application/vnd.github+json"
-        -H "Authorization: Bearer ${{ secrets.TOKEN }}"
-        -H "X-GitHub-Api-Version: 2026-05-12"
-        "https://github.com/repo/VolodymyrDmytr/Playwright_demo/actions/artifacts/$REPORT_ID/zip"
-        -o old_pages.zip
-     - name: Unpack results
-       run: mkdir allure-results && unzip artifacts.zip -d allure-results
-     - name: Unpack old pages
-       run: mkdir old_pages pages_history && unzip old_pages.zip -d old_pages && tar -xvf old_pages/artifact.tar -C pages_history
-     - name: Copy pages history to allure-results file
-       run: cp pages_history/history/* allure-results && cp -r pages_history/history allure-results
-     - name: Store history
-       uses: actions/upload-artifact@v4
-       with:
-        name: allure-results
-        path: allure-results
-        retention-days: 1
-    
-
   run-tests:
     name: Run tests
     runs-on: ubuntu-latest
-    needs: download-artifacts
 
     steps:
     - name: Install project
@@ -157,6 +104,19 @@ jobs:
         run: sudo wget https://github.com/allure-framework/allure2/releases/download/2.40.0/allure-2.40.0.tgz && sudo tar -zxvf allure-2.40.0.tgz -C /opt/ && sudo ln -s /opt/allure-2.40.0/bin/allure /usr/bin/allure
       - name: Download artifacts
         uses: actions/download-artifact@v4
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+        continue-on-error: true
+
+      - name: Restore Allure history
+        run: |
+          if [ -d "gh-pages/history" ]; then
+            mkdir -p allure-results/history
+            cp -r gh-pages/history/* allure-results/history
+          fi
       - name: Generate allure report
         run: allure generate -c allure-results -o _site
       - name: Upload Pages artifacts
