@@ -41,7 +41,7 @@ jobs:
         -H "X-GitHub-Api-Version: 2026-05-12"
         "https://api.github.com/repo/VolodymyrDmytr/Playwright_demo/actions/artifacts?name=allure-results"
         |
-        python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id'])")
+        python -c "import sys, json; print(json.load(sys.stdin)['workflow_runs'][0]['id'])")
         &&
         curl -L
         -H "Accept: application/vnd.github+json"
@@ -55,7 +55,7 @@ jobs:
         -H "X-GitHub-Api-Version: 2026-05-12"
         "https://api.github.com/repo/VolodymyrDmytr/Playwright_demo/actions/artifacts?name=github-pages"
         |
-        python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id'])") 
+        python -c "import sys, json; print(json.load(sys.stdin)['workflow_runs'][0]['id'])") 
         &&
         curl -L
         -H "Accept: application/vnd.github+json"
