@@ -36,33 +36,23 @@ jobs:
         python-version: "3.14"
      - name: Download history
        run: > 
-        $ARTIFACT_ID=$(curl -L 
+        $ARTIFACTS_URL=$(curl -L 
         -H "Accept: application/vnd.github+json"
         -H "X-GitHub-Api-Version: 2026-05-12"
-        "https://api.github.com/repo/VolodymyrDmytr/Playwright_demo/actions/artifacts?name=allure-results"
-        |
-        python -c "import sys, json; print(json.load(sys.stdin)['workflow_runs'][0]['id'])")
+        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/runs?status=success"
+        | python -c "import sys, json; print(json.load(sys.stdin)['workflow_runs'][0]['artifacts_url'])")
+        &&
+        $ARCHIVE_URL=$(curl -L
+        -H "Accept: application/vnd.github+json"
+        -H "X-GitHub-Api-Version: 2026-05-12"
+        "$ARTIFACTS_URL"
+        | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['archive_download_url'])")
         &&
         curl -L
         -H "Accept: application/vnd.github+json"
-        -H "Authorization: Bearer ${{ secrets.TOKEN }}"
         -H "X-GitHub-Api-Version: 2026-05-12"
-        "https://api.github.com/repo/VolodymyrDmytr/Playwright_demo/actions/artifacts/$ARTIFACT_ID/zip"
+        "$ARCHIVE_URL"
         -o artifacts.zip
-        &&
-        $REPORT_ID=$(curl -L 
-        -H "Accept: application/vnd.github+json"
-        -H "X-GitHub-Api-Version: 2026-05-12"
-        "https://api.github.com/repo/VolodymyrDmytr/Playwright_demo/actions/artifacts?name=github-pages"
-        |
-        python -c "import sys, json; print(json.load(sys.stdin)['workflow_runs'][0]['id'])") 
-        &&
-        curl -L
-        -H "Accept: application/vnd.github+json"
-        -H "Authorization: Bearer ${{ secrets.TOKEN }}"
-        -H "X-GitHub-Api-Version: 2026-05-12"
-        "https://api.github.com/repo/VolodymyrDmytr/Playwright_demo/actions/artifacts/$REPORT_ID/zip"
-        -o old_pages.zip
      - name: Unpack results
        run: mkdir allure-results && unzip artifacts.zip -d allure-results
      - name: Unpack old pages
@@ -75,7 +65,6 @@ jobs:
         name: allure-results
         path: allure-results
         retention-days: 1
-    
 
   run-tests:
     name: Run tests
