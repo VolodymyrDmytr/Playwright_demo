@@ -57,7 +57,7 @@ jobs:
      - name: Unpack results
        run: mkdir allure-results && unzip artifacts.zip -d allure-results
      - name: Unpack old pages
-       run: mkdir old_pages pages_history && unzip old_pages.zip -d old_pages && tar -xvf old_pages/artifact.tar -C pages_history
+       run: mkdir old_pages pages_history && unzip artifacts.zip -d old_pages && tar -xvf old_pages/artifact.tar -C pages_history
      - name: Copy pages history to allure-results file
        run: cp pages_history/history/* allure-results && cp -r pages_history/history allure-results
      - name: Store history
