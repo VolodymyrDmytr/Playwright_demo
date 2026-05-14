@@ -51,7 +51,7 @@ jobs:
         curl -L
         -H "Accept: application/vnd.github+json"
         -H "X-GitHub-Api-Version: 2022-11-28"
-        -H "Authorization: Brearer {{ secrets.TOKEN }}"
+        -H "Authorization: Brearer {{ secrets.Token }}"
         "$ARCHIVE_URL"
         -o artifacts.zip
      - name: Unpack results
