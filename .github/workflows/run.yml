@@ -36,17 +36,17 @@ jobs:
         python-version: "3.14"
      - name: Download history
        run: > 
-        $ARTIFACTS_URL=$(curl -L 
+        ARTIFACTS_URL=$(curl -L 
         -H "Accept: application/vnd.github+json"
         -H "X-GitHub-Api-Version: 2026-05-12"
         "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/runs?status=success"
-        | python -c "import sys, json; print(json.load(sys.stdin)['workflow_runs'][0]['artifacts_url']);")
+        | python -c "import sys, json; print(json.load(sys.stdin)['workflow_runs'][0]['artifacts_url'])")
         &&
-        $ARCHIVE_URL=$(curl -L
+        ARCHIVE_URL=$(curl -L
         -H "Accept: application/vnd.github+json"
         -H "X-GitHub-Api-Version: 2026-05-12"
         "$ARTIFACTS_URL"
-        | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['archive_download_url']);")
+        | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['archive_download_url'])")
         &&
         curl -L
         -H "Accept: application/vnd.github+json"
