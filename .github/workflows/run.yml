@@ -36,26 +36,35 @@ jobs:
         python-version: "3.14"
      - name: Download history
        run: > 
-        ARTIFACTS_URL=$(curl -L 
+        ARTIFACT_ID=$(curl -L 
         -H "Accept: application/vnd.github+json"
         -H "X-GitHub-Api-Version: 2022-11-28"
-        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/runs?status=success"
-        | python -c "import sys, json; print(json.load(sys.stdin)['workflow_runs'][0]['artifacts_url'])")
-        &&
-        ARCHIVE_URL=$(curl -L
-        -H "Accept: application/vnd.github+json"
-        -H "X-GitHub-Api-Version: 2022-11-28"
-        "$ARTIFACTS_URL"
-        | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['archive_download_url'])")
+        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/artifacts?name=allure-results"
+        | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id'])")
         &&
         curl -L
         -H "Accept: application/vnd.github+json"
         -H "X-GitHub-Api-Version: 2022-11-28"
         -H "Authorization: Bearer ${{ secrets.Token }}"
-        "$ARCHIVE_URL"
+        " https://api.github.com/repos/senior-tester/run-tests-demo/actions/artifacts/$ARTIFACT_ID/zip "
         -o artifacts.zip
-     - name: Unpack results
+        &&
+        PAGE_ID=$(curl -L 
+        -H "Accept: application/vnd.github+json"
+        -H "X-GitHub-Api-Version: 2022-11-28"
+        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/artifacts?name=github-pages"
+        | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id'])")
+        &&
+        curl -L
+        -H "Accept: application/vnd.github+json"
+        -H "X-GitHub-Api-Version: 2022-11-28"
+        -H "Authorization: Bearer ${{ secrets.Token }}"
+        " https://api.github.com/repos/senior-tester/run-tests-demo/actions/artifacts/$PAGE_ID/zip "
+        -o page.zip
+     - name: Unpack allure results
        run: mkdir allure-results && unzip artifacts.zip -d allure-results
+     - name: Unpack pages
+       run: mkdir pages && unzip 
      - name: Store history
        uses: actions/upload-artifact@v4
        with:
@@ -139,8 +148,8 @@ jobs:
         with:
           distribution: 'microsoft'
           java-version: '17'
-      - name: Install allure 2.40.0
-        run: sudo wget https://api.github.com/allure-framework/allure2/releases/download/2.40.0/allure-2.40.0.tgz && sudo tar -zxvf allure-2.40.0.tgz -C /opt/ && sudo ln -s /opt/allure-2.40.0/bin/allure /usr/bin/allure
+      - name: Install allure 2.41.0
+        run: sudo wget https://github.com/allure-framework/allure2/releases/download/2.41.0/allure-2.41.0.tgz && sudo tar -zxvf allure-2.41.0.tgz -C /opt/ && sudo ln -s /opt/allure-2.41.0/bin/allure /usr/bin/allure
       - name: Download artifacts
         uses: actions/download-artifact@v4
       - name: Generate allure report
