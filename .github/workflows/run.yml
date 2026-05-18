@@ -62,7 +62,7 @@ jobs:
         " https://api.github.com/repos/senior-tester/run-tests-demo/actions/artifacts/$PAGE_ID/zip "
         -o page.zip
      - name: Unpack allure results
-       run: mkdir allure-results && unzip artifacts.zip -d allure-results
+       run: mkdir allure-results && unzip artifacts -d allure-results
      - name: Unpack pages
        run: mkdir pages && unzip 
      - name: Store history
