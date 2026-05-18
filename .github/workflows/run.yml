@@ -46,7 +46,7 @@ jobs:
         -H "Accept: application/vnd.github+json"
         -H "X-GitHub-Api-Version: 2022-11-28"
         -H "Authorization: Bearer ${{ secrets.Token }}"
-        " https://api.github.com/repos/senior-tester/run-tests-demo/actions/artifacts/$ARTIFACT_ID/zip "
+        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/artifacts/$ARTIFACT_ID/zip"
         -o artifacts.zip
         &&
         PAGE_ID=$(curl -L 
@@ -59,7 +59,7 @@ jobs:
         -H "Accept: application/vnd.github+json"
         -H "X-GitHub-Api-Version: 2022-11-28"
         -H "Authorization: Bearer ${{ secrets.Token }}"
-        " https://api.github.com/repos/senior-tester/run-tests-demo/actions/artifacts/$PAGE_ID/zip "
+        " https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/artifacts/$PAGE_ID/zip "
         -o page.zip
      - name: Unpack allure results
        run: mkdir allure-results && unzip artifacts -d allure-results
