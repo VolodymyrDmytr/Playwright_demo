@@ -64,7 +64,7 @@ jobs:
      - name: Unpack allure results
        run: mkdir allure-results && unzip artifacts -d allure-results
      - name: Unpack pages
-       run: mkdir pages && unzip pages -o pages
+       run: mkdir pages && unzip pages -d pages
      - name: Store pages
        run: cp pages/history/* allure-results && cp -r pages/history allure-results
      - name: Store history
