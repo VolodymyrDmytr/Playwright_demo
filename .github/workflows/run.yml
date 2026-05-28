@@ -41,23 +41,29 @@ jobs:
         python-version: "3.14"
      - name: Download history
        run: > 
-        ARTIFACT_ID=$(curl -L 
+        RUN_ID=$(curl -L 
         -H "Accept: application/vnd.github+json"
         -H "X-GitHub-Api-Version: 2022-11-28"
-        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/artifacts?name=allure-results"
-        | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id'])")
+        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/runs?conclusion='success'"
+        | python -c "import sys, json; print(json.load(sys.stdin)['workflow_runs'][0]['id'])")
+        &&
+        ARTIFACT_URL=$(curl -L 
+        -H "Accept: application/vnd.github+json"
+        -H "X-GitHub-Api-Version: 2022-11-28"
+        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/runs/$RUN_ID/artifacts?name=allure-results"
+        | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['archive_download_url'])")
         &&
         curl -L
         -H "Accept: application/vnd.github+json"
         -H "X-GitHub-Api-Version: 2022-11-28"
         -H "Authorization: Bearer ${{ secrets.Token }}"
-        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/artifacts/$ARTIFACT_ID/zip"
+        "$ARTIFACT_URL"
         -o artifacts.zip
         &&
         PAGE_URL=$(curl -L 
         -H "Accept: application/vnd.github+json"
         -H "X-GitHub-Api-Version: 2022-11-28"
-        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/artifacts?name=github-pages"
+        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/runs/$RUN_ID/artifacts?name=github-pages"
         | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['archive_download_url'])")
         &&
         curl -L
