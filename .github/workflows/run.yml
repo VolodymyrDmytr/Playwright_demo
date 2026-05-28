@@ -21,7 +21,7 @@ on:
       skip_history_download:
         description: Download last run results? (Run will fail if artifacts are expired)
         type: boolean
-        default: false
+        default: true
 
 permissions:
   contents: read
