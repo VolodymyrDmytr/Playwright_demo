@@ -71,15 +71,11 @@ jobs:
      - name: Unpack pages
        run: mkdir pages page_1 && unzip pages -d page_1 && tar -xvf page_1/artifact.tar -C pages
      - name: debug step 1
-       run: ls -la
-     - name: debug step 2
-       run: ls -la _site
+       run: tree
      - name: Store pages
        run: cp pages/history/* allure-results && cp -r pages/history allure-results
      - name: debug step 1
-       run: ls -la
-     - name: debug step 2
-       run: ls -la _site
+       run: tree
      - name: Store history
        uses: actions/upload-artifact@v4
        with:
