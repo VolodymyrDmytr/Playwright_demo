@@ -80,7 +80,7 @@ jobs:
         retention-days: 1
 
   run-tests:
-    if: ${{ needs.download-artifacts.result == 'success' || needs.download-artifacts.result == 'skipped' }}
+    if: ${{ always() && needs.download-artifacts.result == 'success' || needs.download-artifacts.result == 'skipped' }}
 
     name: Run tests
     runs-on: ubuntu-latest
