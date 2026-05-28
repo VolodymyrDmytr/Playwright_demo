@@ -21,7 +21,7 @@ on:
       skip_history_download:
         description: Download last run results? (Run will fail if artifacts are expired)
         type: boolean
-        default: true
+        default: false
 
 permissions:
   contents: read
@@ -41,47 +41,37 @@ jobs:
         python-version: "3.14"
      - name: Download history
        run: > 
-        RUN_ID=$(curl -L 
+        ARTIFACT_ID=$(curl -L 
         -H "Accept: application/vnd.github+json"
         -H "X-GitHub-Api-Version: 2022-11-28"
-        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/runs?conclusion=success"
-        | python -c "import sys, json; print(json.load(sys.stdin)['workflow_runs'][0]['id'])")
-        &&
-        ARTIFACT_URL=$(curl -L 
-        -H "Accept: application/vnd.github+json"
-        -H "X-GitHub-Api-Version: 2022-11-28"
-        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/runs/$RUN_ID/artifacts?name=allure-results"
-        | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['archive_download_url'])")
+        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/artifacts?name=allure-results"
+        | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id'])")
         &&
         curl -L
         -H "Accept: application/vnd.github+json"
         -H "X-GitHub-Api-Version: 2022-11-28"
         -H "Authorization: Bearer ${{ secrets.Token }}"
-        "$ARTIFACT_URL"
+        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/artifacts/$ARTIFACT_ID/zip"
         -o artifacts.zip
         &&
-        PAGE_URL=$(curl -L 
+        PAGE_ID=$(curl -L 
         -H "Accept: application/vnd.github+json"
         -H "X-GitHub-Api-Version: 2022-11-28"
-        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/runs/$RUN_ID/artifacts?name=github-pages"
-        | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['archive_download_url'])")
+        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/artifacts?name=github-pages"
+        | python -c "import sys, json; print(json.load(sys.stdin)['artifacts'][0]['id'])")
         &&
         curl -L
         -H "Accept: application/vnd.github+json"
         -H "X-GitHub-Api-Version: 2022-11-28"
         -H "Authorization: Bearer ${{ secrets.Token }}"
-        "$PAGE_URL"
+        "https://api.github.com/repos/VolodymyrDmytr/Playwright_demo/actions/artifacts/$PAGE_ID/zip"
         -o pages.zip
      - name: Unpack allure results
        run: mkdir allure-results && unzip artifacts -d allure-results
      - name: Unpack pages
-       run: mkdir pages page_1 && unzip pages -d page_1 && tar -xvf page_1/artifact.tar -C pages
-     - name: debug step 1
-       run: tree
+       run: mkdir pages page_1 && unzip pages -d page_1 && tar -xvf page_1/artifact.tar -С pages
      - name: Store pages
        run: cp pages/history/* allure-results && cp -r pages/history allure-results
-     - name: debug step 1
-       run: tree
      - name: Store history
        uses: actions/upload-artifact@v4
        with:
@@ -156,7 +146,7 @@ jobs:
 
   publish-allure:
     if: ${{ always() && needs.run-tests.result == 'success' }}
-
+  
     name: Generate and Publish allure report
     runs-on: ubuntu-latest
     needs: run-tests
