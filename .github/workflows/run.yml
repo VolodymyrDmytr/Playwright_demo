@@ -19,7 +19,7 @@ on:
           - ui_done_page
           - url
       skip_history_download:
-        description: Download old run? (Run will fail if artifacts are expired)
+        description: Download last run results? (Run will fail if artifacts are expired)
         type: boolean
         default: false
 
@@ -80,7 +80,7 @@ jobs:
         retention-days: 1
 
   run-tests:
-    if: needs.download-artifacts.result == 'success' || needs.download-artifacts.result == 'skipped'
+    if: ${{ needs.download-artifacts.result == 'success' || needs.download-artifacts.result == 'skipped' }}
 
     name: Run tests
     runs-on: ubuntu-latest
