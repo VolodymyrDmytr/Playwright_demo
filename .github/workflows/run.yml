@@ -156,7 +156,7 @@ jobs:
     - name: Inject old runs
       if: "github.event.inputs.skip_history_download == 'true'"
       continue-on-error: true
-      run: cp history/* allure-results/
+      run: cp -r history/* allure-results/
     - name: Check tree
       run: tree
     - name: Store allure results
