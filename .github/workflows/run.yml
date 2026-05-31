@@ -91,16 +91,6 @@ jobs:
     needs: download-artifacts
 
     steps:
-    - name: Download old artifacts
-      if: "github.event.inputs.skip_history_download == 'true'"
-      continue-on-error: true
-      uses: actions/download-artifact@v4
-      with:
-        name: allure-results
-        path:
-          history
-    - name: Check tree
-      run: tree
     - name: Install project
       uses: actions/checkout@v3
     - name: Install Python
@@ -111,6 +101,7 @@ jobs:
       run: pip install -r requirements.txt
     - name: Install Browsers
       run: playwright install
+
     - name: Run All tests
       if: "github.event.inputs.deployment_target == 'All'"
       run: poetry run pytest --alluredir=allure-results
@@ -151,6 +142,17 @@ jobs:
       if: "github.event.inputs.deployment_target == 'url'"
       run: poetry run pytest -m url --alluredir=allure-results
       continue-on-error: true
+
+    - name: Download old artifacts
+      if: "github.event.inputs.skip_history_download == 'true'"
+      continue-on-error: true
+      uses: actions/download-artifact@v4
+      with:
+        name: allure-results
+        path:
+          history
+    - name: Check tree
+      run: tree
     - name: Inject old runs
       if: "github.event.inputs.skip_history_download == 'true'"
       continue-on-error: true
