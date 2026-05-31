@@ -72,6 +72,8 @@ jobs:
        run: mkdir pages page_1 && unzip pages -d page_1 && tar -xvf page_1/artifact.tar -C pages
      - name: Store pages
        run: cp pages/history/* allure-results && cp -r pages/history allure-results
+     - name: Check tree
+       run: tree
      - name: Store history
        uses: actions/upload-artifact@v4
        with:
