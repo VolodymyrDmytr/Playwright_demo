@@ -98,7 +98,7 @@ jobs:
       with:
         name: allure-results
         path:
-          old-allure-results
+          history
     - name: Check tree
       run: tree
     - name: Install project
@@ -154,7 +154,7 @@ jobs:
     - name: Inject old runs
       if: "github.event.inputs.skip_history_download == 'true'"
       continue-on-error: true
-      run: cp -r old-allure-results/* allure-results/
+      run: cp history/* allure-results/
     - name: Check tree
       run: tree
     - name: Store allure results
