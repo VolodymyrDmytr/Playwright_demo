@@ -19,7 +19,7 @@ on:
           - ui_done_page
           - url
       skip_history_download:
-        description: Download last run results? (Run will fail if artifacts are expired)
+        description: Download last run results? (Old results will not be used in future runsw)
         type: boolean
         default: true
 
@@ -91,10 +91,6 @@ jobs:
     needs: download-artifacts
 
     steps:
-    - name: Download old artifacts
-      uses: actions/download-artifact@v4
-    - name: Check tree
-      run: tree
     - name: Install project
       uses: actions/checkout@v3
     - name: Install Python
@@ -145,6 +141,10 @@ jobs:
       if: "github.event.inputs.deployment_target == 'url'"
       run: poetry run pytest -m url --alluredir=allure-results
       continue-on-error: true
+    - name: Check tree
+      run: tree
+    - name: Download old artifacts
+      uses: actions/download-artifact@v4
     - name: Check tree
       run: tree
     - name: Store allure results
