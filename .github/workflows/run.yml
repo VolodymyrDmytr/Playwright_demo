@@ -39,7 +39,7 @@ jobs:
        uses: actions/setup-python@v4
        with:
         python-version: "3.14"
-     - name: Download history
+     - name: Download artifacts
        run: > 
         ARTIFACT_ID=$(curl -L 
         -H "Accept: application/vnd.github+json"
@@ -89,6 +89,8 @@ jobs:
     needs: download-artifacts
 
     steps:
+    - name: Download old artifacts
+      uses: actions/download-artifact@v4
     - name: Install project
       uses: actions/checkout@v3
     - name: Install Python
