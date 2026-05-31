@@ -91,6 +91,14 @@ jobs:
     needs: download-artifacts
 
     steps:
+    - name: Download old artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: allure-results
+        path:
+          old-allure-results
+    - name: Check tree
+      run: tree
     - name: Install project
       uses: actions/checkout@v3
     - name: Install Python
@@ -143,10 +151,8 @@ jobs:
       continue-on-error: true
     - name: Check tree
       run: tree
-    - name: Download old artifacts
-      uses: actions/download-artifact@v4
-    - name: Check tree
-      run: tree
+    - name: Inject old runs
+      run: cp -r old-allure-results/. allure-results/
     - name: Store allure results
       uses: actions/upload-artifact@v4
       with:
