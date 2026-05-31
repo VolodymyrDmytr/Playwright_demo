@@ -149,10 +149,10 @@ jobs:
       if: "github.event.inputs.deployment_target == 'url'"
       run: poetry run pytest -m url --alluredir=allure-results
       continue-on-error: true
-    - name: Check tree
-      run: tree
     - name: Inject old runs
       run: cp -r old-allure-results/. allure-results/
+    - name: Check tree
+      run: tree
     - name: Store allure results
       uses: actions/upload-artifact@v4
       with:
