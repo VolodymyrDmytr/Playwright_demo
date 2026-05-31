@@ -21,7 +21,7 @@ on:
       skip_history_download:
         description: Download last run results? (Run will fail if artifacts are expired)
         type: boolean
-        default: false
+        default: true
 
 permissions:
   contents: read
@@ -33,6 +33,7 @@ jobs:
     if: ${{ inputs.skip_history_download }}
     name: Downloading runs history
     runs-on: ubuntu-latest
+    continue-on-error: true
 
     steps:
      - name: Install Python
@@ -78,7 +79,8 @@ jobs:
        uses: actions/upload-artifact@v4
        with:
         name: allure-results
-        path: allure-results
+        path: 
+          allure-results
         retention-days: 1
 
   run-tests:
@@ -91,6 +93,8 @@ jobs:
     steps:
     - name: Download old artifacts
       uses: actions/download-artifact@v4
+    - name: Check tree
+      run: tree
     - name: Install project
       uses: actions/checkout@v3
     - name: Install Python
@@ -147,7 +151,8 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: allure-results
-        path: allure-results
+        path: 
+          allure-results
         retention-days: 1
 
   publish-allure:
