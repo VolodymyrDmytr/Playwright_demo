@@ -93,6 +93,7 @@ jobs:
     steps:
     - name: Download old artifacts
       if: "github.event.inputs.skip_history_download == 'true'"
+      continue-on-error: true
       uses: actions/download-artifact@v4
       with:
         name: allure-results
@@ -152,6 +153,7 @@ jobs:
       continue-on-error: true
     - name: Inject old runs
       if: "github.event.inputs.skip_history_download == 'true'"
+      continue-on-error: true
       run: cp -r old-allure-results/* allure-results/
     - name: Check tree
       run: tree
