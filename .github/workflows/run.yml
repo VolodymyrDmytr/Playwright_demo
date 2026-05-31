@@ -19,7 +19,7 @@ on:
           - ui_done_page
           - url
       skip_history_download:
-        description: Download last run results (Old results will not be used in future runsw)
+        description: Download last run results (Old results will not be used in future runs)
         type: boolean
         default: true
 
@@ -152,7 +152,7 @@ jobs:
       continue-on-error: true
     - name: Inject old runs
       if: "github.event.inputs.skip_history_download == 'true'"
-      run: cp -r old-allure-results/. allure-results/
+      run: cp -r old-allure-results/* allure-results/
     - name: Check tree
       run: tree
     - name: Store allure results
