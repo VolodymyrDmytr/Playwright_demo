@@ -1,4 +1,4 @@
-from playwright.sync_api import expect, Page
+from playwright.async_api import expect, Page
 import allure
 
 from pages.base_page import BasePage
@@ -12,7 +12,7 @@ class LoginPage(BasePage):
         self.locators = LoginLocators(self.page)
 
     @allure.step('Filling username field: {data}')
-    def fill_username_field(
+    async def fill_username_field(
             self,
             data: str,
     ) -> None:
@@ -22,10 +22,10 @@ class LoginPage(BasePage):
             data (str): Username
         """
         locator = self.locators.username_field
-        locator.fill(data)
+        await locator.fill(data)
 
     @allure.step('Filling password field: {data}')
-    def fill_password_field(
+    async def fill_password_field(
             self,
             data: str,
     ) -> None:
@@ -35,17 +35,17 @@ class LoginPage(BasePage):
             data (str): Password
         """
         locator = self.locators.password_field
-        locator.fill(data)
+        await locator.fill(data)
 
     @allure.step('Click Login button')
-    def press_login_button(self) -> None:
+    async def press_login_button(self) -> None:
         """Clicks Login button on Login page
         """
         locator = self.locators.login_button
-        locator.click()
+        await locator.click()
 
     @allure.step('Checks is error container is visible')
-    def check_that_error_container_is_not_visible(self) -> bool:
+    async def check_that_error_container_is_not_visible(self) -> bool:
         """Checks is error container is not visible on Login page
         * Don`t require asset
         * Not visible == empty. Because block is always visible.
@@ -54,10 +54,10 @@ class LoginPage(BasePage):
             bool: True, if error container is not visible. False, otherwise
         """
         locator = self.locators.error_message
-        expect(locator).to_be_empty()
+        await expect(locator).to_be_empty()
 
     @allure.step('Checks is error text as expected. Expected: {data}')
-    def check_is_error_message_expected(
+    async def check_is_error_message_expected(
             self,
             data: str,
     ) -> bool:
@@ -70,17 +70,17 @@ class LoginPage(BasePage):
             bool: True, if error text is matches expectations. False otherwise
         """
         locator = self.locators.error_message
-        expect(locator).to_have_text(data)
+        await expect(locator).to_have_text(data)
 
     @allure.step('Close error block')
-    def close_error_text_block(self) -> None:
+    async def close_error_text_block(self) -> None:
         """Closing error block with text on Login page
         """
         locator = self.locators.close_error_button
-        locator.click()
+        await locator.click()
 
     @allure.step('Checks that fields contain errors')
-    def check_errors_in_fields(
+    async def check_errors_in_fields(
             self,
             data: int,
     ) -> bool:
@@ -99,14 +99,14 @@ class LoginPage(BasePage):
             return False
 
         locator = self.locators.error_in_field
-        assert locator.count() == data
+        assert await locator.count() == data
 
     @allure.step('Checks that fields don`t contain errors')
-    def check_errors_are_not_visible(self) -> bool:
+    async def check_errors_are_not_visible(self) -> bool:
         """Checks that errors in fields are not visible
 
         Returns:
             bool: True, if errors are hidden in the fields
         """
         locator = self.locators.error_in_field
-        expect(locator).not_to_be_visible()
+        await expect(locator).not_to_be_visible()

@@ -1,4 +1,4 @@
-from playwright.sync_api import expect, Page
+from playwright.async_api import expect, Page
 import allure
 import logging
 
@@ -18,7 +18,7 @@ class CatalogPage(BasePage):
                 Title: {title}
                 Description: {description}
                 Price: {price}""")
-    def check_product_card(
+    async def check_product_card(
             self,
             number: int,
             title: str,
@@ -52,13 +52,13 @@ class CatalogPage(BasePage):
             price_locator.text_content(), title, description, price,
         )
 
-        expect(title_locator).to_have_text(title)
-        expect(description_locator).to_have_text(description)
-        expect(price_locator).to_have_text(price)
-        expect(image_locator).to_have_attribute('alt', title)
+        await expect(title_locator).to_have_text(title)
+        await expect(description_locator).to_have_text(description)
+        await expect(price_locator).to_have_text(price)
+        await expect(image_locator).to_have_attribute('alt', title)
 
     @allure.step('Click Add To Card button for card #{data}')
-    def click_card_button(
+    async def click_card_button(
             self,
             data: int,
     ) -> None:
@@ -70,10 +70,10 @@ class CatalogPage(BasePage):
             data (int): number of the card to be added to cart
         """
         locators = self.locators.product_card.nth(data)
-        self.locators.product_button(locators).click()
+        await self.locators.product_button(locators).click()
 
     @allure.step('Select {data} sort')
-    def choose_sort(
+    async def choose_sort(
             self,
             data: str,
     ) -> None:
@@ -83,4 +83,4 @@ class CatalogPage(BasePage):
             data (str): Should be available sort type
         """
         locator = self.locators.sort_select
-        locator.select_option(value=data)
+        await locator.select_option(value=data)

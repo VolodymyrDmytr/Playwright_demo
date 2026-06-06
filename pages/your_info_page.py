@@ -1,7 +1,7 @@
 from pages.base_page import BasePage
 from config.locators import YourInfoLocators
 
-from playwright.sync_api import expect, Locator, Page
+from playwright.async_api import expect, Locator, Page
 import allure
 
 
@@ -12,7 +12,7 @@ class YourInfoPage(BasePage):
         self.locators = YourInfoLocators(self.page)
 
     # Helping methods
-    def _locator_by_field_name(
+    async def _locator_by_field_name(
             self,
             data: str,
     ) -> Locator:
@@ -34,7 +34,7 @@ class YourInfoPage(BasePage):
     # Actions
 
     @allure.step('Filling First name field: {data}')
-    def fill_first_name_field(
+    async def fill_first_name_field(
             self,
             data: str,
     ) -> None:
@@ -44,10 +44,10 @@ class YourInfoPage(BasePage):
             data (str): Text to be inputed
         """
         locator = self.locators.first_name_field
-        locator.fill(data)
+        await locator.fill(data)
 
     @allure.step('Filling Last name field: {data}')
-    def fill_last_name_field(
+    async def fill_last_name_field(
             self,
             data: str,
     ) -> None:
@@ -57,10 +57,10 @@ class YourInfoPage(BasePage):
             data (str): Text to be inputed
         """
         locator = self.locators.last_name_field
-        locator.fill(data)
+        await locator.fill(data)
 
     @allure.step('Filling Postal code field: {data}')
-    def fill_postal_code_field(
+    async def fill_postal_code_field(
             self,
             data: str,
     ) -> None:
@@ -70,24 +70,24 @@ class YourInfoPage(BasePage):
             data (str): Text to be inputed
         """
         locator = self.locators.postal_code_field
-        locator.fill(data)
+        await locator.fill(data)
 
     @allure.step('Click Cancel button')
-    def press_cancel_button(self) -> None:
+    async def press_cancel_button(self) -> None:
         """Pressing 'Cancel' button on Your Info page
         """
         locator = self.locators.cancel_button
-        locator.click()
+        await locator.click()
 
     @allure.step('Click Continue button')
-    def press_continue_button(self) -> None:
+    async def press_continue_button(self) -> None:
         """Pressing 'Continue' button on Your Info page
         """
         locator = self.locators.continue_button
-        locator.click()
+        await locator.click()
 
     @allure.step('Check are fields contain errors')
-    def check_error_icons_in_fields(
+    async def check_error_icons_in_fields(
             self,
     ) -> bool:
         """Check`s is error icon are visible in expected field
@@ -97,11 +97,11 @@ class YourInfoPage(BasePage):
             bool: True, if error icons are visible
         """
         for i in range(0, 3):
-            expect(
+            await expect(
                 self.locators.error_icons_in_fields(i)).to_be_visible()
 
     @allure.step('Check are fields do not contain errors')
-    def check_missing_error_icons_in_fields(
+    async def check_missing_error_icons_in_fields(
             self,
     ) -> bool:
         """Check`s is error icons are invisible in expected field on Your Info
@@ -111,11 +111,11 @@ class YourInfoPage(BasePage):
             bool: True, if error icons are invisible
         """
         for i in range(0, 3):
-            expect(
+            await expect(
                 self.locators.error_icons_in_fields(i)).not_to_be_visible()
 
     @allure.step('Checks is error text as expected. Expected: {data}')
-    def check_error_text(
+    async def check_error_text(
             self,
             data: str,
     ) -> bool:
@@ -128,27 +128,27 @@ class YourInfoPage(BasePage):
             bool: True, if error text is as expected
         """
         locator = self.locators.error_massege
-        expect(locator).to_have_text(data)
+        await expect(locator).to_have_text(data)
 
     @allure.step('Closing error block')
-    def close_error_block(self) -> None:
+    async def close_error_block(self) -> None:
         """Closing error massege block on Your Info page
         """
         locator = self.locators.close_error_message_button
-        locator.click()
+        await locator.click()
 
     @allure.step('Checks is error block is closed')
-    def check_is_error_block_absent(self) -> bool:
+    async def check_is_error_block_absent(self) -> bool:
         """Checks is error massege block is invisible on Your Info page
 
         Returns:
             bool: True, if block is invisible
         """
         locator = self.locators.close_error_message_button
-        expect(locator).not_to_be_visible()
+        await expect(locator).not_to_be_visible()
 
     @allure.step('Checks is {field_name} contains {data}')
-    def check_data_in_field(
+    async def check_data_in_field(
             self,
             field_name: str,
             data: str,
@@ -163,5 +163,4 @@ class YourInfoPage(BasePage):
             bool: True, if text is as expected in a specific field
         """
         locator = self._locator_by_field_name(field_name)
-
-        expect(locator).to_have_text(data)
+        await expect(locator).to_have_text(data)

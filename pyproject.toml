@@ -67,7 +67,8 @@ dependencies = [
     "tzdata (==2025.3)",
     "urllib3 (==2.6.3)",
     "virtualenv (==21.2.4)",
-    "zstandard (==0.25.0)"
+    "zstandard (==0.25.0)",
+    "pytest-asyncio (>=1.4.0,<2.0.0)"
 ]
 
 

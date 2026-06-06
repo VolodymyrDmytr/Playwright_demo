@@ -1,4 +1,4 @@
-from playwright.sync_api import expect, Page
+from playwright.async_api import expect, Page
 import allure
 
 from pages.base_page import BasePage
@@ -12,7 +12,7 @@ class ProductPage(BasePage):
         self.locators = ProductLocators(self.page)
 
     @allure.step('Check is product title is {data}')
-    def check_product_title(
+    async def check_product_title(
             self,
             data: str,
     ) -> bool:
@@ -25,10 +25,10 @@ class ProductPage(BasePage):
             bool: True, if title is as expected
         """
         locator = self.locators.title
-        expect(locator).to_have_text(data)
+        await expect(locator).to_have_text(data)
 
     @allure.step('Check is product description is {data}')
-    def check_product_description(
+    async def check_product_description(
             self,
             data: str,
     ) -> bool:
@@ -42,10 +42,10 @@ class ProductPage(BasePage):
             bool: True, if description is as expected
         """
         locator = self.locators.description
-        expect(locator).to_have_text(data)
+        await expect(locator).to_have_text(data)
 
     @allure.step('Check is product price is {data}')
-    def check_product_price(
+    async def check_product_price(
             self,
             data: str,
     ) -> bool:
@@ -58,10 +58,10 @@ class ProductPage(BasePage):
             bool: True, if price is as expected
         """
         locator = self.locators.price
-        expect(locator).to_have_text(data)
+        await expect(locator).to_have_text(data)
 
     @allure.step('Click Add To Card button')
-    def click_add_to_card_button(
+    async def click_add_to_card_button(
             self,
     ) -> None:
         """Click on "Add to card" or "Remove" button.
@@ -69,10 +69,10 @@ class ProductPage(BasePage):
         on product`s page
         """
         locator = self.locators.add_button
-        locator.click()
+        await locator.click()
 
     @allure.step('Click Remove button')
-    def click_remove_button(
+    async def click_remove_button(
             self,
     ) -> None:
         """Click on "Add to card" or "Remove" button.
@@ -80,13 +80,13 @@ class ProductPage(BasePage):
         on product`s page
         """
         locator = self.locators.remove_button
-        locator.click()
+        await locator.click()
 
     @allure.step('Click Back To Products button')
-    def click_back_to_products_button(
+    async def click_back_to_products_button(
             self,
     ) -> None:
         """Click "Back to products" button on product`s page
         """
         locator = self.locators.back_button
-        locator.click()
+        await locator.click()

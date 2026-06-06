@@ -1,7 +1,7 @@
 from pages.base_page import BasePage
 from config.locators import OverviewLocators
 
-from playwright.sync_api import expect, Page
+from playwright.async_api import expect, Page
 import allure
 import logging
 
@@ -19,7 +19,7 @@ class OverviewPage(BasePage):
                  Title: {title}
                  Description: {description}
                  Price: {price}""")
-    def check_product_card(
+    async def check_product_card(
             self,
             number: int,
             amount: int,
@@ -45,13 +45,13 @@ class OverviewPage(BasePage):
         description_locator = self.locators.card_description(locator)
         price_locator = self.locators.card_price(locator)
 
-        expect(amount_locator).to_have_text(str(amount))
-        expect(title_locator).to_have_text(title)
-        expect(description_locator).to_have_text(description)
-        expect(price_locator).to_have_text(price)
+        await expect(amount_locator).to_have_text(str(amount))
+        await expect(title_locator).to_have_text(title)
+        await expect(description_locator).to_have_text(description)
+        await expect(price_locator).to_have_text(price)
 
     @allure.step('Check all prices')
-    def check_prices(self) -> bool:
+    async def check_prices(self) -> bool:
         """Check`s are item total, taxes and total as expected
 
         Returns:
@@ -105,21 +105,21 @@ class OverviewPage(BasePage):
         assert total_price == round(expected_total_sum, 2)
 
     @allure.step('Click Cancel button')
-    def click_cancel_button(self) -> None:
+    async def click_cancel_button(self) -> None:
         """Click`s "Cancel" button on Overview page
         """
         locator = self.locators.cancel_button
-        locator.click()
+        await locator.click()
 
     @allure.step('Click Finish button')
-    def click_finish_button(self) -> None:
+    async def click_finish_button(self) -> None:
         """Click`s "Finish" button on Overview page
         """
         locator = self.locators.finish_button
-        locator.click()
+        await locator.click()
 
     @allure.step('Check is shipping method is {data}')
-    def check_shipping_method(
+    async def check_shipping_method(
             self,
             data: str,
     ) -> bool:
@@ -132,4 +132,4 @@ class OverviewPage(BasePage):
             bool: True, if shipping method matches expected result
         """
         locator = self.locators.delivery_method
-        expect(locator).to_have_text(data)
+        await expect(locator).to_have_text(data)

@@ -1,4 +1,4 @@
-from playwright.sync_api import expect, Page
+from playwright.async_api import expect, Page
 import logging
 import allure
 
@@ -19,7 +19,7 @@ class CartPage(BasePage):
                  Title: {title}
                  Description: {description}
                  Price: {price}""")
-    def check_cart_card(
+    async def check_cart_card(
             self,
             number: int,
             amount: int,
@@ -57,23 +57,23 @@ class CartPage(BasePage):
             number, title, amount, description, price,
         )
 
-        expect(title_locator).to_have_text(title)
-        expect(amount_locator).to_have_text(str(amount))
-        expect(description_locator).to_have_text(description)
-        expect(price_locator).to_have_text(price)
+        await expect(title_locator).to_have_text(title)
+        await expect(amount_locator).to_have_text(str(amount))
+        await expect(description_locator).to_have_text(description)
+        await expect(price_locator).to_have_text(price)
 
     @allure.step('Check that there are no cards on page')
-    def check_no_cards(self) -> bool:
+    async def check_no_cards(self) -> bool:
         """Checks cards if cards are present on the Cart page
 
         Returns:
             bool: True, if cards are not present (visible)
         """
         locator = self.locators.card
-        expect(locator).not_to_be_visible()
+        await expect(locator).not_to_be_visible()
 
     @allure.step('Pressing remove button for card #{number}')
-    def click_remove_button(
+    async def click_remove_button(
             self,
             number: int,
     ) -> None:
@@ -83,7 +83,7 @@ class CartPage(BasePage):
             number (int): Card`s number
         """
         locator = self.locators.card.nth(number - 1)
-        self.locators.card_button(locator).click()
+        await self.locators.card_button(locator).click()
 
     # def change_product_amount(
     #         self,
@@ -101,15 +101,15 @@ class CartPage(BasePage):
     #     self.card_amount(locator).fill(data)
 
     @allure.step('Click Continue Shopping button')
-    def click_continue_shopping_button(self) -> None:
+    async def click_continue_shopping_button(self) -> None:
         """Clicks "Continue shopping" button on Card page
         """
         locator = self.locators.continue_shopping_button
-        locator.click()
+        await locator.click()
 
     @allure.step('Click Checkout button')
-    def click_checkout_button(self) -> None:
+    async def click_checkout_button(self) -> None:
         """Clicks "Checkout" button on Card page
         """
         locator = self.locators.checkout_button
-        locator.click()
+        await locator.click()

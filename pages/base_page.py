@@ -1,4 +1,4 @@
-from playwright.sync_api import Page, expect
+from playwright.async_api import Page, expect
 import allure
 
 from config.constants import const
@@ -12,7 +12,7 @@ class BasePage:
         self.locators = UniversalLocators(self.page)
 
     @allure.step('Open url: {url}')
-    def go_to_page(
+    async def go_to_page(
             self,
             url: str,
     ) -> None:
@@ -21,20 +21,20 @@ class BasePage:
         Args:
             url (str): URL of a page
         """
-        self.page.goto(url)
+        await self.page.goto(url)
 
     @allure.step('Expected page title: {const.page_title}')
-    def check_page_title(self) -> bool:
+    async def check_page_title(self) -> bool:
         """Check and return is page has required title
         Required title (in config/constants.py): page_title
 
         Returns:
             bool: True, if page has required title
         """
-        expect(self.page).to_have_title(const.page_title)
+        await expect(self.page).to_have_title(const.page_title)
 
     @allure.step('Expeced page url: {url}')
-    def check_url(
+    async def check_url(
             self,
             url: str,
     ) -> bool:
@@ -46,10 +46,10 @@ class BasePage:
         Returns:
             bool: True, if URL of current page is matching expected
         """
-        expect(self.page).to_have_url(url)
+        await expect(self.page).to_have_url(url)
 
     @allure.step('Click on product link: {data}')
-    def click_on_product(
+    async def click_on_product(
             self,
             data: str,
     ) -> None:
@@ -59,8 +59,8 @@ class BasePage:
             data (str): name of product
         """
         locator = self.locators.locator_by_text(data)
-        locator.click()
+        await locator.click()
 
     @allure.step("Press system 'Back' button")
-    def sys_back(self) -> None:
-        self.page.go_back()
+    async def sys_back(self) -> None:
+        await self.page.go_back()
